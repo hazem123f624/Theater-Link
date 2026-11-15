@@ -1,0 +1,21 @@
+{
+    "name": "theaterlink/tenancy",
+    "description": "Tenant, membership, role, and permission foundation for TheaterLink.",
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {}
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Tenancy\\": "app/",
+            "Modules\\Tenancy\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\Tenancy\\Tests\\": "tests/"
+        }
+    }
+}

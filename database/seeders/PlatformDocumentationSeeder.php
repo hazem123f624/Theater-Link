@@ -1,0 +1,174 @@
+<?php
+
+namespace Database\Seeders;
+
+use App\Models\Documentations;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
+
+class PlatformDocumentationSeeder extends Seeder
+{
+    private int $sorting = 100;
+
+    public function run(): void
+    {
+        $endpoints = [
+            // Central admin authentication
+            ['POST', '/api/v1/login', 'Admin Login', 'Authenticate a central administrator.', 'Login & Session', ['body' => ['step' => 1, 'email' => 'admin@base.com', 'password' => 'P@ssw0rd']]],
+            ['POST', '/api/v1/logout', 'Admin Logout', 'Revoke the current administrator token.', 'Login & Session', ['auth' => true]],
+            ['POST', '/api/v1/forget-password', 'Admin Forgot Password', 'Request a password-reset OTP.', 'Password Reset', ['body' => ['email' => 'admin@base.com']]],
+            ['POST', '/api/v1/verify-forget-password-otp', 'Verify Admin Reset OTP', 'Verify the password-reset OTP and temporary token.', 'Password Reset', ['body' => ['email' => 'admin@base.com', 'otp' => '1234', 'change_password_token' => 'token']]],
+            ['POST', '/api/v1/reset-password', 'Reset Admin Password', 'Set a new administrator password.', 'Password Reset', ['body' => ['email' => 'admin@base.com', 'otp' => '1234', 'change_password_token' => 'token', 'password' => 'P@ssw0rd123', 'password_confirmation' => 'P@ssw0rd123']]],
+            ['POST', '/api/v1/resend-otp', 'Resend OTP', 'Resend an authentication or password-reset OTP.', 'Login & Session', ['body' => ['email' => 'admin@base.com']]],
+            ['POST', '/api/v1/resend-forgot-password-otp', 'Resend Forgotten Password OTP', 'Resend the password-reset OTP.', 'Password Reset', ['body' => ['email' => 'admin@base.com']]],
+
+            // Central admin dashboard
+            ['GET', '/api/v1/dashboard/profile', 'Get Admin Profile', 'Return the authenticated administrator profile.', 'Profile', ['auth' => true]],
+            ['PUT', '/api/v1/dashboard/profile', 'Update Admin Profile', 'Update the authenticated administrator profile.', 'Profile', ['auth' => true, 'body' => ['name' => 'Admin']]],
+            ['POST', '/api/v1/dashboard/change-password', 'Change Admin Password', 'Change the current administrator password.', 'Profile', ['auth' => true, 'body' => ['old_password' => 'old', 'password' => 'new', 'password_confirmation' => 'new']]],
+            ['GET', '/api/v1/dashboard/counts', 'Dashboard Counts', 'Return central dashboard counters.', 'Overview', ['auth' => true]],
+            ['GET', '/api/v1/dashboard/admins', 'List Administrators', 'List central administrator accounts.', 'Administration', ['auth' => true, 'query' => ['search' => 'admin', 'per_page' => 15]]],
+            ['POST', '/api/v1/dashboard/admins', 'Create Administrator', 'Create a central administrator account.', 'Administration', ['auth' => true, 'body' => ['name' => 'Admin', 'email' => 'admin@example.test', 'phone' => '+966500000000', 'password' => 'P@ssw0rd123']]],
+            ['GET', '/api/v1/dashboard/admins/{admin}', 'Get Administrator', 'View a central administrator account.', 'Administration', ['auth' => true]],
+            ['PUT', '/api/v1/dashboard/admins/{admin}', 'Update Administrator', 'Update a central administrator account.', 'Administration', ['auth' => true]],
+            ['DELETE', '/api/v1/dashboard/admins/{admin}', 'Delete Administrator', 'Soft-delete a central administrator account.', 'Administration', ['auth' => true]],
+            ['GET', '/api/v1/dashboard/roles', 'List Roles', 'List central administrator roles.', 'Roles', ['auth' => true]],
+            ['POST', '/api/v1/dashboard/roles', 'Create Role', 'Create a central administrator role.', 'Roles', ['auth' => true, 'body' => ['name' => ['en' => 'Manager', 'ar' => 'مدير'], 'permissions' => []]]],
+            ['GET', '/api/v1/dashboard/roles/{role}', 'Get Role', 'View a central administrator role.', 'Roles', ['auth' => true]],
+            ['PUT', '/api/v1/dashboard/roles/{role}', 'Update Role', 'Update a central administrator role.', 'Roles', ['auth' => true]],
+            ['DELETE', '/api/v1/dashboard/roles/{role}', 'Delete Role', 'Soft-delete a central administrator role.', 'Roles', ['auth' => true]],
+            ['GET', '/api/v1/dashboard/models', 'List Permission Models', 'List the permission modules available to central roles.', 'Models', ['auth' => true]],
+            ['GET', '/api/v1/dashboard/activity-logs', 'List Activity Logs', 'List central administrator activity logs.', 'Activity Logs', ['auth' => true, 'query' => ['per_page' => 15]]],
+            ['GET', '/api/v1/dashboard/users', 'List Individual Users', 'List individual accounts.', 'User Management', ['auth' => true, 'query' => ['search' => 'user', 'per_page' => 15]]],
+            ['GET', '/api/v1/dashboard/users/{user}', 'Get Individual User', 'View an individual account.', 'User Management', ['auth' => true]],
+            ['PATCH', '/api/v1/dashboard/users/{user}/toggle-active', 'Toggle Individual User Status', 'Activate or suspend an individual account.', 'User Management', ['auth' => true]],
+            ['DELETE', '/api/v1/dashboard/users/{user}', 'Delete Individual User', 'Soft-delete an individual account.', 'User Management', ['auth' => true]],
+
+            ['GET', '/api/v1/dashboard/admins/trash', 'List Deleted Administrators', 'List soft-deleted administrator accounts.', 'Administration', ['auth' => true]],
+            ['PATCH', '/api/v1/dashboard/admins/{admin}/restore', 'Restore Administrator', 'Restore a soft-deleted administrator.', 'Administration', ['auth' => true]],
+            ['DELETE', '/api/v1/dashboard/admins/{admin}/force-delete', 'Force Delete Administrator', 'Permanently remove a soft-deleted administrator.', 'Administration', ['auth' => true]],
+            ['PATCH', '/api/v1/dashboard/admins/{admin}/toggle-active', 'Toggle Administrator Status', 'Activate or deactivate an administrator.', 'Administration', ['auth' => true]],
+            ['DELETE', '/api/v1/dashboard/admins/{admin}/roles/{role}', 'Remove Administrator Role', 'Remove a role from an administrator.', 'Role Assignments', ['auth' => true]],
+            ['GET', '/api/v1/dashboard/roles/trash', 'List Deleted Roles', 'List soft-deleted central roles.', 'Roles', ['auth' => true]],
+            ['PATCH', '/api/v1/dashboard/roles/{role}/restore', 'Restore Role', 'Restore a soft-deleted central role.', 'Roles', ['auth' => true]],
+            ['DELETE', '/api/v1/dashboard/roles/{role}/force-delete', 'Force Delete Role', 'Permanently remove a soft-deleted central role.', 'Roles', ['auth' => true]],
+            ['PATCH', '/api/v1/dashboard/roles/{role}/toggle-active', 'Toggle Role Status', 'Activate or deactivate a central role.', 'Roles', ['auth' => true]],
+            ['GET', '/api/v1/dashboard/roles/{role}/admins', 'List Role Administrators', 'List administrators assigned to a role.', 'Role Assignments', ['auth' => true]],
+            ['POST', '/api/v1/dashboard/roles/{role}/admins', 'Assign Administrators To Role', 'Assign one or more administrators to a role.', 'Role Assignments', ['auth' => true]],
+            ['GET', '/api/v1/dashboard/roles/{role}/available-admins', 'List Available Administrators', 'List administrators not yet assigned to the role.', 'Role Assignments', ['auth' => true]],
+            ['GET', '/api/v1/dashboard/roles/{role}/permissions', 'Get Role Permissions', 'Return the permissions granted to a role.', 'Roles', ['auth' => true]],
+            ['GET', '/api/v1/dashboard/users/trash', 'List Deleted Individual Users', 'List soft-deleted individual accounts.', 'User Management', ['auth' => true]],
+            ['PATCH', '/api/v1/dashboard/users/{user}/restore', 'Restore Individual User', 'Restore a soft-deleted individual account.', 'User Management', ['auth' => true]],
+            ['DELETE', '/api/v1/dashboard/users/{user}/force-delete', 'Force Delete Individual User', 'Permanently remove a soft-deleted individual account.', 'User Management', ['auth' => true]],
+            ['GET', '/api/v1/dashboard/activity-logs/{subject_id}', 'Get Activity Log Subject', 'Return the activity history for a subject.', 'Activity Logs', ['auth' => true]],
+            ['GET', '/api/v1/dashboard/activity-logs/{subject_id}/export', 'Export Activity Log Subject', 'Export a subject activity history.', 'Activity Logs', ['auth' => true]],
+            ['GET', '/api/v1/dashboard/activity-logs/export/{fileName}/download', 'Download Activity Log Export', 'Download a generated activity-log export.', 'Activity Logs', ['auth' => true]],
+
+            // Individual user dashboard
+            ['GET', '/api/v1/theater/dashboard', 'Theater Dashboard', 'Return the theater dashboard summary and workspace counts.', 'Overview', ['auth' => true]],
+            ['GET', '/api/v1/group/dashboard', 'Group Dashboard', 'Return the group dashboard summary and reservation counts.', 'Overview', ['auth' => true]],
+            ['GET', '/api/v1/user/dashboard', 'User Dashboard', 'Return the individual user dashboard summary.', 'Overview', ['auth' => true]],
+            ['POST', '/api/v1/user/register', 'Individual Registration', 'Start individual registration and send an OTP.', 'Authentication', ['body' => ['name' => 'Audience Member', 'country_code' => '966', 'phone' => '500000000', 'email' => 'member@example.test', 'password' => 'P@ssw0rd123', 'password_confirmation' => 'P@ssw0rd123']]],
+            ['POST', '/api/v1/user/verify', 'Verify Individual Registration', 'Verify the registration OTP and create the individual account.', 'Authentication', ['body' => ['country_code' => '966', 'phone' => '500000000', 'otp' => '1234']]],
+            ['POST', '/api/v1/user/login', 'Individual Login', 'Authenticate an individual with phone and password.', 'Authentication', ['body' => ['country_code' => '966', 'phone' => '500000000', 'password' => 'P@ssw0rd123']]],
+            ['POST', '/api/v1/user/logout', 'Individual Logout', 'Revoke the current individual token.', 'Authentication', ['auth' => true]],
+            ['POST', '/api/v1/user/refresh-token', 'Refresh Individual Token', 'Replace the current individual token.', 'Authentication', ['auth' => true]],
+            ['POST', '/api/v1/user/resend-otp', 'Resend Individual OTP', 'Resend a registration or login OTP.', 'Authentication', ['body' => ['country_code' => '966', 'phone' => '500000000']]],
+            ['POST', '/api/v1/user/forget-password', 'Individual Forgot Password', 'Request an individual password-reset OTP.', 'Password', ['body' => ['country_code' => '966', 'phone' => '500000000']]],
+            ['POST', '/api/v1/user/verify-forget-password', 'Verify Individual Reset OTP', 'Verify the individual password-reset OTP.', 'Password', ['body' => ['country_code' => '966', 'phone' => '500000000', 'otp' => '1234', 'change_password_token' => 'token']]],
+            ['POST', '/api/v1/user/reset-password', 'Reset Individual Password', 'Set a new individual password.', 'Password', ['body' => ['country_code' => '966', 'phone' => '500000000', 'otp' => '1234', 'change_password_token' => 'token', 'password' => 'P@ssw0rd123', 'password_confirmation' => 'P@ssw0rd123']]],
+            ['GET', '/api/v1/user/profile', 'Get Individual Profile', 'Return the authenticated individual profile.', 'Profile', ['auth' => true]],
+            ['POST', '/api/v1/user/profile', 'Update Individual Profile', 'Update the authenticated individual profile.', 'Profile', ['auth' => true, 'body' => ['name' => 'Audience Member']]],
+            ['DELETE', '/api/v1/user/profile', 'Delete Individual Account', 'Soft-delete the authenticated individual account.', 'Profile', ['auth' => true]],
+            ['POST', '/api/v1/user/change-password', 'Change Individual Password', 'Change the authenticated individual password.', 'Password', ['auth' => true, 'body' => ['old_password' => 'old', 'password' => 'new', 'password_confirmation' => 'new']]],
+
+            // Settings and locations
+            ['GET', '/api/v1/settings/{type}', 'List Settings', 'List settings of a given type.', 'Settings', ['auth' => true]],
+            ['POST', '/api/v1/settings/{type}', 'Create Setting', 'Create a setting of a given type.', 'Settings', ['auth' => true]],
+            ['GET', '/api/v1/settings/{type}/{id}', 'Get Setting', 'View a setting.', 'Settings', ['auth' => true]],
+            ['PUT', '/api/v1/settings/{type}/{id}', 'Update Setting', 'Update a setting.', 'Settings', ['auth' => true]],
+            ['PATCH', '/api/v1/settings/{type}/{id}/toggle-active', 'Toggle Setting Status', 'Activate or deactivate a setting.', 'Settings', ['auth' => true]],
+            ['DELETE', '/api/v1/settings/{type}/{data}', 'Delete Setting', 'Soft-delete a setting.', 'Settings', ['auth' => true]],
+            ['GET', '/api/v1/locations/country', 'List Countries', 'List active countries.', 'Locations', ['auth' => false]],
+            ['GET', '/api/v1/locations/country/search', 'Search Countries', 'Search active countries by name.', 'Locations', ['auth' => false, 'query' => ['search' => 'Saudi']]],
+            ['GET', '/api/v1/locations/city', 'List Cities', 'List active cities.', 'Locations', ['auth' => false]],
+            ['GET', '/api/v1/locations/city/search', 'Search Cities', 'Search active cities by name.', 'Locations', ['auth' => false, 'query' => ['search' => 'Riyadh']]],
+            ['GET', '/api/v1/locations/country/{country}/cities', 'Cities By Country', 'List cities belonging to a country.', 'Locations', ['auth' => false]],
+            ['GET', '/api/v1/locations/nationality', 'List Nationalities', 'List active nationalities.', 'Locations', ['auth' => false]],
+
+
+            // Phase 2 onboarding and tenant management
+            ['POST', '/api/v1/theater/register', 'Theater Registration', 'Start theater registration and send an owner OTP.', 'Registration & Verification', ['body' => ['name' => 'Al Noor Theater', 'subdomain' => 'al-noor', 'owner_name' => 'Theater Owner', 'email' => 'owner@al-noor.test', 'phone' => '+966500000001', 'password' => 'P@ssw0rd123', 'password_confirmation' => 'P@ssw0rd123']]],
+            ['POST', '/api/v1/theater/verify', 'Verify Theater Registration', 'Verify the theater owner OTP and activate the workspace.', 'Registration & Verification', ['body' => ['phone' => '+966500000001', 'otp' => '1234']]],
+            ['POST', '/api/v1/theater/resend-otp', 'Resend Theater OTP', 'Resend the theater registration OTP.', 'Registration & Verification', ['body' => ['phone' => '+966500000001']]],
+            ['POST', '/api/v1/group/register', 'Group Registration', 'Start group registration with a permit upload and owner OTP.', 'Registration & Verification', ['body' => ['name' => 'Mask Group', 'subdomain' => 'mask-group', 'contact_person_name' => 'Group Owner', 'email' => 'owner@mask-group.test', 'phone' => '+966500000002', 'password' => 'P@ssw0rd123', 'password_confirmation' => 'P@ssw0rd123', 'permit' => 'permit.pdf']]],
+            ['POST', '/api/v1/group/verify', 'Verify Group Registration', 'Verify the group owner OTP and create the pending application.', 'Registration & Verification', ['body' => ['phone' => '+966500000002', 'otp' => '1234']]],
+            ['POST', '/api/v1/group/resend-otp', 'Resend Group OTP', 'Resend the group registration OTP.', 'Registration & Verification', ['body' => ['phone' => '+966500000002']]],
+            ['GET', '/api/v1/group/application', 'Get Group Application', 'Return the current group application status and document feedback.', 'Application', ['auth' => true]],
+            ['GET', '/api/v1/group/application/documents', 'Get Group Application Documents', 'List the documents attached to the current group application.', 'Application', ['auth' => true]],
+            ['GET', '/api/v1/group/application/workspace', 'Get Group Workspace Status', 'Return the group workspace status and address.', 'Application', ['auth' => true]],
+            ['GET', '/api/v1/group/application/support', 'Get Group Support Contact', 'Return support contact information for the group.', 'Application', []] ,
+            ['POST', '/api/v1/tenant/forgot-password', 'Tenant Forgot Password', 'Request a tenant-member password reset OTP.', 'Password Reset', ['body' => ['subdomain' => 'al-noor', 'email' => 'owner@al-noor.test']]],
+            ['POST', '/api/v1/tenant/verify-forgot-password', 'Verify Tenant Reset OTP', 'Verify the tenant password reset OTP.', 'Password Reset', ['body' => ['subdomain' => 'al-noor', 'email' => 'owner@al-noor.test', 'otp' => '1234', 'change_password_token' => 'token']]],
+            ['POST', '/api/v1/tenant/reset-password', 'Reset Tenant Password', 'Set a new tenant-member password.', 'Password Reset', ['body' => ['subdomain' => 'al-noor', 'email' => 'owner@al-noor.test', 'otp' => '1234', 'change_password_token' => 'token', 'password' => 'P@ssw0rd123', 'password_confirmation' => 'P@ssw0rd123']]],
+            ['GET', '/api/v1/tenant/team/invitations', 'List Team Invitations', 'List team invitations for the workspace.', 'Team', ['auth' => true]],
+            ['POST', '/api/v1/tenant/team/invitations', 'Invite Team Member', 'Invite a member by email and assign a role.', 'Team', ['auth' => true, 'body' => ['email' => 'invitee@example.test', 'name' => 'Invitee', 'role_id' => 5]]],
+            ['POST', '/api/v1/tenant/team/invitations/accept', 'Accept Team Invitation', 'Accept an invitation and create the member account.', 'Team', ['body' => ['token' => 'invitation-token', 'name' => 'Invitee', 'password' => 'P@ssw0rd123', 'password_confirmation' => 'P@ssw0rd123']]],
+            ['GET', '/api/v1/tenant/team/trash', 'List Deleted Team Members', 'List soft-deleted team members.', 'Team', ['auth' => true]],
+            ['PATCH', '/api/v1/tenant/team/{member}/restore', 'Restore Team Member', 'Restore a soft-deleted team member.', 'Team', ['auth' => true]],
+            ['DELETE', '/api/v1/tenant/team/{member}/force-delete', 'Force Delete Team Member', 'Permanently remove a soft-deleted team member.', 'Team', ['auth' => true]],
+            ['POST', '/api/v1/tenant/roles', 'Create Tenant Role', 'Create a custom role with allowed permissions.', 'Roles', ['auth' => true, 'body' => ['name' => 'Event Coordinator', 'permission_ids' => [1, 2]]]],
+            ['GET', '/api/v1/tenant/roles/{role}', 'Get Tenant Role', 'View a tenant role.', 'Roles', ['auth' => true]],
+            ['PUT', '/api/v1/tenant/roles/{role}', 'Update Tenant Role', 'Update a custom role and its permissions.', 'Roles', ['auth' => true]],
+            ['DELETE', '/api/v1/tenant/roles/{role}', 'Delete Tenant Role', 'Delete a custom role.', 'Roles', ['auth' => true]],
+            ['GET', '/api/v1/tenant/resolve', 'Resolve Tenant Workspace', 'Resolve an active workspace by subdomain and return its encrypted identifier.', 'Authentication', ['query' => ['subdomain' => 'al-noor']]],
+            // Security utilities
+            ['GET', '/api/v1/security/key-info', 'Get API Key Info', 'Return API client key status and expiry.', 'Security', ['auth' => true]],
+            ['POST', '/api/v1/security/renew-key', 'Renew API Key', 'Rotate the API client key.', 'Security', ['auth' => true]],
+            ['GET', '/api/v1/security/nonce', 'Get Security Nonce', 'Issue a one-time nonce for anti-replay protection.', 'Security', []],
+        ];
+
+        foreach ($endpoints as [$method, $route, $name, $short, $group, $options]) {
+            $this->add($method, $route, $name, $short, $group, $options);
+        }
+    }
+
+    private function add(string $method, string $route, string $name, string $short, string $group, array $options): void
+    {
+        $headers = ['Content-Type' => 'application/json'];
+        if ($options['auth'] ?? false) {
+            $headers = ['Authorization' => 'Bearer {token}', 'Content-Type' => 'application/json'];
+        }
+
+        Documentations::updateOrCreate(
+            ['method' => $method, 'route' => $route],
+            [
+                'name' => $name,
+                'section' => 1,
+                'category' => Str::slug($method.' '.$route),
+                'group' => $group,
+                'sorting' => $this->sorting++,
+                'short_description' => $short,
+                'description' => $short,
+                'headers' => json_encode($headers, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
+                'notes' => null,
+                'query_params' => json_encode($options['query'] ?? [], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
+                'body' => json_encode($options['body'] ?? [], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
+                'method' => $method,
+                'route' => $route,
+                'success_response' => json_encode([
+                    'success' => true,
+                    'message' => 'Operation completed successfully.',
+                    'data' => [],
+                ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
+                'error_response' => json_encode([
+                    'success' => false,
+                    'message' => 'The request could not be completed.',
+                ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
+                'developer_tested' => 1,
+                'tester_tested' => 1,
+                'is_active' => 1,
+            ]
+        );
+    }
+}

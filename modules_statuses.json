@@ -1,0 +1,6 @@
+{
+    "Admins": true,
+    "Users": true,
+    "Settings": true,
+    "Tenancy": true
+}

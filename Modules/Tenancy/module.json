@@ -1,0 +1,11 @@
+{
+    "name": "Tenancy",
+    "alias": "tenancy",
+    "description": "Shared tenant, membership, role, and permission foundation for TheaterLink.",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Tenancy\\Providers\\TenancyServiceProvider"
+    ],
+    "files": []
+}
