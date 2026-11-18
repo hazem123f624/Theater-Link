@@ -91,6 +91,12 @@ class Tenant extends Model
         return $this->hasOne(GroupApplication::class);
     }
 
+    /** @return HasMany<\Modules\Theaters\Models\Hall, $this> */
+    public function halls(): HasMany
+    {
+        return $this->hasMany(\Modules\Theaters\Models\Hall::class);
+    }
+
     public function scopeActive($query)
     {
         return $query->where('status', TenantStatus::ACTIVE->value);

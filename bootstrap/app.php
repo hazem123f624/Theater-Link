@@ -44,6 +44,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'tenant.active' => \Modules\Tenancy\Http\Middleware\EnsureTenantActive::class,
             'tenant.type' => \Modules\Tenancy\Http\Middleware\EnsureTenantType::class,
             'permission' => \Modules\Tenancy\Http\Middleware\EnsureTenantPermission::class,
+            'admin.permission' => \App\Http\Middleware\EnsureAdminPermission::class,
         ]);
 
         $middleware->appendToGroup('security', [

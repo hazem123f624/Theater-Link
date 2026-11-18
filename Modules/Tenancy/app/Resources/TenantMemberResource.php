@@ -27,6 +27,7 @@ class TenantMemberResource extends JsonResource
             'name' => $this->name,
             'email' => $this->email,
             'phone' => $this->phone,
+            'phone_verified_at' => $this->phone_verified_at,
             'is_owner' => (bool) $this->is_owner,
             'is_active' => (bool) $this->is_active,
             'token' => $this->token ?? null,

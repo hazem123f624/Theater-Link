@@ -1,5 +1,51 @@
 # Changes Log
 
+## Phase 4 backend and frontend — 2026-11-18
+
+- Added the `Theaters` domain module and theater operations schema.
+- Added editable theater profiles with timezone, logo, and cover media.
+- Added halls, weekly schedules, materialized time slots, maintenance blocks, and public availability.
+- Added events with English/Arabic content, categories, posters, publishing, unpublishing, and cancellation.
+- Added shows with hall overlap validation, event occupancy, cancellation, and slot release.
+- Added ticket tiers with capacity, sale windows, quantities, and per-booking limits.
+- Added public theater, event, category, and hall-availability APIs.
+- Added real theater dashboard counts.
+- Added theater profile, hall, schedule, availability, event, show, and ticket-tier management screens.
+- Added public theater and event catalog pages.
+- Added English/Arabic Phase 4 labels and RTL support.
+- Extended the browser smoke test through the full theater operations and public catalog flow.
+- Updated `/docs` to 170 endpoint methods and the Postman collection to 103 requests.
+- Added Phase 4 feature tests covering profile, halls, schedules, slots, blocks, events, shows, tiers, public visibility, and tenant isolation.
+
+## Phase 3 backend and frontend — 2026-11-15
+
+- Added group-application status history, document version history, reviewer metadata, and owner phone-verification timestamps.
+- Added transactional review workflow with status recalculation, idempotent approval, rejection/reopening, resubmission, notes, suspension, and reactivation.
+- Added admin group-application list, search, status filters, detail, private document download/preview, decision actions, and internal notes.
+- Added group document download and replacement upload with retained versions.
+- Added in-app notifications with queued email/SMS delivery after commit, plus notification list/read endpoints and a bell UI.
+- Enforced admin review permissions with `group_applications-fetch/read/update`.
+- Made admin dashboard counts reflect theaters, groups, and pending applications.
+- Added English/Arabic Phase 3 labels and RTL-compatible admin/group review interfaces.
+- Extended the browser smoke test through document rejection, group resubmission, approval, dashboard access, and notifications.
+- Updated `/docs` to 170 endpoint methods and the Postman collection to 103 requests.
+- Added Phase 3 backend feature tests covering review, documents, approval, rejection/reopen, resubmission, permissions, notifications, suspension, and counts.
+
+## Phase 2 frontend — 2026-11-15
+
+- Added a React 19 + TypeScript + Vite single-page application served by Laravel.
+- Added public landing, theater/group/individual registration with OTP, and invitation acceptance.
+- Added theater, group, individual, and admin login surfaces with actor-specific guards.
+- Added the pending group application experience and dashboard-access guard.
+- Added theater/group dashboards, team CRUD/trash/restore, invitations, custom roles with permission selection, and account pages.
+- Added individual profile, phone verification, password change, and account deletion.
+- Added admin dashboard counts, profile editing, and password change.
+- Added English/Arabic localization with RTL layout and language persistence.
+- Added API client normalization, session refresh, permission-aware navigation, accessible form fields, and responsive layouts.
+- Added the tenant permission catalog endpoint and role `permission_ids`, CORS headers, and invitation email links.
+- Added frontend unit/component tests and a browser smoke test covering registration, invitations, role creation, password reset, and RTL.
+- Verified: 30 backend tests / 153 assertions, 7 frontend tests, TypeScript clean, production build successful, browser smoke test covering all Phase 2 flows.
+
 ## Phase 2 completion — 2026-11-12
 
 - Completed theater registration with OTP verification/resend, theater profile creation, workspace provisioning, and owner token issuance.
@@ -13,8 +59,8 @@
 - Added English and Arabic messages for registration, applications, invitations, roles, teams, and password reset.
 - Added Phase 2 registration, role, invitation, restore/force-delete, and password-reset feature tests.
 - Added model and relation annotations; targeted PHPStan analysis is clean.
-- Added a 45-request Phase 2 Postman collection.
-- Final verification: 29 tests / 144 assertions passing, `/docs` serving 112 endpoint methods, composer validation and security audit clean.
+- Added a 46-request Phase 2 Postman collection.
+- Final verification: 51 tests / 281 assertions passing, `/docs` serving 170 endpoint methods, composer validation and security audit clean.
 
 ## Session 2026-11-12 — TheaterLink foundation
 
@@ -29,7 +75,7 @@
 - Added architecture, business, user-story, and phase documentation for all phases.
 - Added tenant authentication, pending-group access, team isolation, permission, and localization tests.
 - Replaced the Scribe documentation page with the QEEI-style custom documentation UI, including the sidebar, endpoint cards, parameter tables, code boxes, search, theme toggle, and responsive layout.
-- Seeded the custom documentation UI with 112 endpoints across theater, group, user, tenant, admin, public, and internal API surfaces.
+- Seeded the custom documentation UI with 170 endpoints across theater, group, user, tenant, admin, public, and internal API surfaces.
 - Made public location lookups unauthenticated and kept central settings admin-only.
 - Added seeded Saudi/Egypt location data for registration forms.
 - Ensured suspended workspaces return a workspace-status error at login.

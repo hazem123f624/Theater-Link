@@ -7,6 +7,7 @@ use Modules\Admins\Database\Seeders\AdminsDatabaseSeeder;
 use Modules\Settings\Database\Seeders\LocationSeeder;
 use Modules\Settings\Database\Seeders\SettingsDatabaseSeeder;
 use Modules\Tenancy\Database\Seeders\TenancyDatabaseSeeder;
+use Modules\Theaters\Database\Seeders\EventCategorySeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -17,6 +18,7 @@ class DatabaseSeeder extends Seeder
             SettingsDatabaseSeeder::class,
             LocationSeeder::class,
             TenancyDatabaseSeeder::class,
+            EventCategorySeeder::class,
             DocumentationSeeder::class,
             PlatformDocumentationSeeder::class,
         ]);

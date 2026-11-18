@@ -2,13 +2,14 @@
 
 This folder holds the product and engineering documentation for the TheaterLink backend.
 
-> **Current status — 2026-11-12:** Phase 1 analysis is complete. **Phase 2 backend is complete and verified:** theater/group/individual registration, OTP verification, workspace-bound authentication, tenant isolation and permission middleware, team management, invitations, custom tenant roles, password reset, dashboards, English/Arabic localization, and the Phase 2 test suite. The custom QEEI-style API reference at `/docs` covers all 112 API endpoint methods, and a 45-request Postman collection is available at [`postman/TheaterLink-Phase-2.postman_collection.json`](postman/TheaterLink-Phase-2.postman_collection.json). Phase 3 admin review and approval is next.
+> **Current status — 2026-11-18:** Phase 1 analysis, Phase 2, Phase 3, and Phase 4 are complete and verified. Phase 4 adds theater profile management, halls, weekly schedules, materialized slot availability, maintenance blocks, events with Arabic/English content, shows, ticket tiers, and the public theater/event catalog. The custom QEEI-style API reference at `/docs` covers all 170 API endpoint methods, and a 103-request Phase 2–4 Postman collection is available at [`postman/TheaterLink-Phase-2.postman_collection.json`](postman/TheaterLink-Phase-2.postman_collection.json). Phase 5 group reservations is next.
 
 | File | What it covers |
 |---|---|
 | [`business.md`](business.md) | TheaterLink business design, actors, phases, reservation lifecycle, ticketing rules, and glossary. |
 | [`user-stories.md`](user-stories.md) | Product user stories and acceptance criteria for every phase. |
 | [`commands.md`](commands.md) | Common setup, development, database, testing, module, and route commands. |
+| [`frontend.md`](frontend.md) | Phase 2 React frontend stack, routes, local development, tests, and API integration notes. |
 | [`phase-1-technical-analysis.md`](phase-1-technical-analysis.md) | Phase 1 source-code analysis, multi-tenancy decision, reservation strategy, ticket inventory strategy, and architecture proposal. |
 | [`phase-1/`](phase-1/README.md) | Phase 1 analysis summary, task checklist, and architecture review checklist. |
 | [`phase-2/`](phase-2/README.md) | Phase 2 core architecture, authentication, registration, tenancy, team, and roles tasks and test cases. |

@@ -23,15 +23,18 @@
 - Custom tenant role create/show/update/delete with tenant-type permission validation and system-role protection.
 - Tenant password reset with OTP, reset token, password update, and token revocation.
 - English and Arabic messages for all Phase 2 flows.
-- QEEI-style `/docs` with all 112 API endpoint methods.
-- Phase 2 Postman collection with 45 requests.
+- QEEI-style `/docs` with all 170 API endpoint methods.
+- Phase 2–4 Postman collection with 103 requests.
 - Registration, role, invitation, password-reset, and restore/force-delete feature tests.
+- React 19 + TypeScript frontend served by Laravel with public registration, four sign-in surfaces, tenant dashboards, team management, invitations, roles, password reset, individual profile/security, and admin shell.
+- English/Arabic RTL frontend with accessible form fields, responsive layouts, session refresh, normalized pagination, and permission-aware navigation.
+- Frontend unit/component tests and a browser smoke test covering the full Phase 2 journey, including invitations and tenant password reset.
 
 ## Verification
 
 ```text
 php artisan test
-Tests: 29 passed (144 assertions)
+Tests: 51 passed (281 assertions)
 Duration: ~70s
 ```
 
@@ -50,8 +53,11 @@ No security vulnerability advisories found
 
 ```text
 GET /docs -> 200
-Documented API methods: 112
-Postman requests: 45
+Documented API methods: 113
+Postman requests: 46
+Frontend Vitest: 7 passed
+TypeScript: clean
+Production build: successful
 ```
 
 ## Covered Scenarios
@@ -86,7 +92,7 @@ Postman requests: 45
 - Admin group application review, approval, rejection, and resubmission decisions (Phase 3).
 - Real hall/event/reservation/booking dashboard counters (Phase 4–6).
 - Dedicated login/OTP rate-limit tests (security hardening).
-- Frontend application UI; Phase 2 delivers APIs and the `/docs` reference.
+- Operational theater, reservation, and booking screens (Phase 4–6).
 
 ## Next Phase
 

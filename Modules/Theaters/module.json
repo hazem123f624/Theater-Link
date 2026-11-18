@@ -1,0 +1,11 @@
+{
+    "name": "Theaters",
+    "alias": "theaters",
+    "description": "Theater profile, halls, schedules, availability, events, shows, and ticket tiers.",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Theaters\\Providers\\TheatersServiceProvider"
+    ],
+    "files": []
+}

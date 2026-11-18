@@ -49,6 +49,36 @@ class TenantRoleTest extends TestCase
         $this->assertSoftDeleted('tenant_roles', ['id' => $roleId]);
     }
 
+    public function test_an_owner_can_load_the_permission_catalog_and_role_permission_ids(): void
+    {
+        $this->provisionTheater('catalog-theater');
+        $token = $this->login('catalog-theater', 'owner@catalog-theater.test');
+        $permission = Permission::query()->where('name', 'events.fetch')->firstOrFail();
+
+        $catalog = $this->withToken($token)
+            ->getJson('/api/v1/tenant/roles/permissions')
+            ->assertOk()
+            ->assertJsonFragment(['name' => 'events.fetch']);
+
+        $this->assertContains(
+            $permission->id,
+            collect($catalog->json('data'))->pluck('id')->all()
+        );
+
+        $create = $this->withToken($token)->postJson('/api/v1/tenant/roles', [
+            'name' => 'Catalog Coordinator',
+            'permission_ids' => [$permission->id],
+        ])->assertCreated()
+            ->assertJsonPath('data.permission_ids.0', $permission->id);
+
+        $this->withToken($token)->getJson('/api/v1/tenant/roles')
+            ->assertOk()
+            ->assertJsonFragment([
+                'id' => $create->json('data.id'),
+                'permission_ids' => [$permission->id],
+            ]);
+    }
+
     public function test_system_roles_cannot_be_deleted(): void
     {
         $tenant = $this->provisionTheater('system-role-theater');

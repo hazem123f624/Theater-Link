@@ -7,6 +7,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Modules\Admins\Interfaces\AdminsInterface;
 use Modules\Admins\Models\Admins;
+use Modules\Tenancy\Enums\GroupApplicationStatus;
+use Modules\Tenancy\Enums\TenantType;
+use Modules\Tenancy\Models\GroupApplication;
+use Modules\Tenancy\Models\Tenant;
 use Modules\Users\Models\User;
 
 class AdminsRepository implements AdminsInterface
@@ -143,9 +147,16 @@ class AdminsRepository implements AdminsInterface
         try {
             return [
                 'users_count' => User::count(),
-                'theaters_count' => 0,
-                'theater_groups_count' => 0,
-                'pending_group_applications_count' => 0,
+                'theaters_count' => Tenant::query()->where('type', TenantType::THEATER->value)->count(),
+                'theater_groups_count' => Tenant::query()->where('type', TenantType::GROUP->value)->count(),
+                'pending_group_applications_count' => GroupApplication::query()
+                    ->whereIn('status', [
+                        GroupApplicationStatus::PENDING_REVIEW->value,
+                        GroupApplicationStatus::UNDER_REVIEW->value,
+                        GroupApplicationStatus::REQUIRES_RESUBMISSION->value,
+                        GroupApplicationStatus::READY_FOR_REVIEW->value,
+                    ])
+                    ->count(),
                 'reservations_count' => 0,
                 'bookings_count' => 0,
             ];

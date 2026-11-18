@@ -16,18 +16,20 @@ return [
         'User Dashboard API' => ['user'],
         'Public API' => ['public', 'web'],
         'Internal API' => ['internal', 'security'],
+        'Notifications API' => ['notifications'],
     ],
 
     'group_threshold' => (int) env('API_DOCS_GROUP_THRESHOLD', 5),
 
     'module_order' => [
-        'Theater Workspace API' => ['Authentication', 'Dashboard', 'Theater'],
+        'Theater Workspace API' => ['Authentication', 'Dashboard', 'Theater Profile', 'Halls', 'Hall Schedules', 'Hall Availability', 'Events', 'Shows', 'Ticket Tiers'],
         'Group Workspace API' => ['Authentication', 'Dashboard', 'Theater Group'],
         'Tenant API' => ['Authentication', 'Tenancy', 'Team', 'Roles'],
-        'Admin Dashboard API' => ['Authentication', 'Administration', 'Users', 'Settings', 'Locations', 'Activity Logs'],
+        'Admin Dashboard API' => ['Authentication', 'Administration', 'Group Applications', 'Users', 'Settings', 'Locations', 'Activity Logs'],
         'User Dashboard API' => ['Authentication', 'Users', 'Dashboard'],
         'Internal API' => ['Security', 'Tenancy'],
-        'Public API' => ['Authentication', 'Locations', 'Theaters', 'Events'],
+        'Notifications API' => ['Notifications'],
+        'Public API' => ['Authentication', 'Locations', 'Public Catalog'],
     ],
 
     'group_order' => [
@@ -37,6 +39,7 @@ return [
         'Roles' => 40,
         'Administration' => 50,
         'Registration & Verification' => 10,
+        'Notifications' => 15,
         'Password' => 20,
         'Common' => 100,
     ],

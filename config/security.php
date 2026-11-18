@@ -83,7 +83,8 @@ return [
         'allowed_methods' => ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
         'allowed_headers' => [
             'Content-Type', 'Authorization', 'X-Requested-With',
-            'X-API-Token', 'X-SIGNATURE', 'X-TIMESTAMP',
+            'X-API-Token', 'X-SIGNATURE', 'X-TIMESTAMP', 'X-NONCE',
+            'X-Subdomain', 'X-Tenant', 'Accept-Language',
         ],
         'expose_headers' => ['X-RateLimit-Limit', 'X-RateLimit-Remaining'],
         'max_age' => 86400,
