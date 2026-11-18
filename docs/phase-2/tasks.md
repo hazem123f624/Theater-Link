@@ -123,11 +123,26 @@ Status legend: `[x]` implemented and verified, `[~]` partial/deferred with an ex
 - [x] Add phase documentation in the project format.
 - [x] Add tenant authentication, registration, team, role, invitation, and password-reset tests.
 - [x] Run the full test suite successfully.
-- [x] Add API documentation cases for every Phase 2 endpoint; `/docs` now covers 112 API endpoint methods.
-- [x] Add a Postman collection covering 45 Phase 2 requests.
+- [x] Add API documentation cases for every Phase 2 endpoint; `/docs` now covers 170 API endpoint methods.
+- [x] Add a Postman collection covering 103 Phase 2–4 requests.
 - [x] Run targeted static analysis on the tenancy, registration, role, invitation, password-reset, and documentation code.
 - [x] Add Arabic translations for all Phase 2 messages.
 - [x] Validate `composer.json` and run the dependency security audit.
+
+## 10. Web Frontend
+
+- [x] Add a React 19 + TypeScript + Vite SPA served through the Laravel application shell.
+- [x] Add a responsive TheaterLink design system with accessible form controls and RTL support.
+- [x] Add public landing, theater/group/individual registration, OTP verification, and invitation acceptance.
+- [x] Add theater, group, individual, and admin sign-in flows.
+- [x] Add the pending group application status experience and dashboard guard.
+- [x] Add theater/group dashboards, team management, trash/restore, invitations, and custom role editing.
+- [x] Add individual profile, phone verification, password change, and account deletion.
+- [x] Add admin dashboard counts, profile editing, and password change.
+- [x] Add English/Arabic translations with RTL layout and language persistence.
+- [x] Add session refresh, normalized API envelopes/pagination, permission-aware navigation, and actor guards.
+- [x] Add the tenant permission catalog endpoint and role `permission_ids`.
+- [x] Add frontend unit/component tests, TypeScript checking, production build, and a browser smoke test.
 
 ## Definition of Done
 

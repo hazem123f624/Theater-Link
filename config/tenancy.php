@@ -19,8 +19,16 @@ return [
 
     'default_currency' => env('THEATERLINK_CURRENCY', 'SAR'),
 
+    'timezone' => env('THEATERLINK_TIMEZONE', 'Asia/Riyadh'),
+
     'workspace' => [
         'base_url' => env('THEATERLINK_WORKSPACE_BASE_URL', env('APP_URL', 'http://theaterlink.test')),
+    ],
+
+    'frontend_url' => env('THEATERLINK_FRONTEND_URL', env('APP_URL', 'http://theaterlink.test')),
+
+    'group_application' => [
+        'required_documents' => ['license'],
     ],
 
     'support' => [

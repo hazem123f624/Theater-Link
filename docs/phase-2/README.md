@@ -15,6 +15,7 @@ This folder tracks the implementation and verification work for Phase 2 of Theat
 | [`tasks.md`](tasks.md) | Implementation checklist with final status and deferred items. |
 | [`test-cases.md`](test-cases.md) | QA and automation test-case specification for Phase 2. |
 | [`execution-report.md`](execution-report.md) | Final local test, static-analysis, and implementation report. |
+| [`../frontend.md`](../frontend.md) | React frontend stack, routes, development commands, and API integration notes. |
 
 ## Current Status
 
@@ -35,8 +36,10 @@ This folder tracks the implementation and verification work for Phase 2 of Theat
 | Tenant roles | Complete | List/create/show/update/delete custom roles, permission validation by tenant type, system-role protection. |
 | Tenant password reset | Complete | Forgot-password OTP, token verification, and password reset; existing tokens are revoked. |
 | Localization | Complete | English and Arabic messages for tenancy, registration, teams, roles, invitations, and password reset. |
-| API documentation | Complete | QEEI-style `/docs` with all 112 API endpoint methods, including every Phase 2 endpoint. |
-| Postman collection | Complete | [`../postman/TheaterLink-Phase-2.postman_collection.json`](../postman/TheaterLink-Phase-2.postman_collection.json) with 45 Phase 2 requests. |
+| API documentation | Complete | QEEI-style `/docs` with all 170 API endpoint methods, including every Phase 2 endpoint. |
+| Postman collection | Complete | [`../postman/TheaterLink-Phase-2.postman_collection.json`](../postman/TheaterLink-Phase-2.postman_collection.json) with 103 Phase 2–4 requests. |
+| Web frontend | Complete | React 19 + TypeScript SPA with registration, four sign-in surfaces, tenant dashboards, team, roles, invitations, password reset, and admin shell. |
+| Frontend verification | Complete | 7 Vitest tests, TypeScript clean, production build successful, browser smoke test covering all Phase 2 flows including invitations and password reset. |
 
 ## Implemented Endpoints
 
@@ -124,10 +127,9 @@ Base path: `/api/v1`
 | Item | Reason |
 |---|---|
 | Optional theater registration documents | Theater profile media belongs to Phase 4 theater management. |
-| Admin review, approval, rejection, and resubmission decisions | Phase 3 admin review scope. |
 | Real hall/event/reservation/booking dashboard counters | Requires the Phase 4–6 domain modules. |
 | Dedicated login/OTP rate-limit tests | Shared security middleware already applies limits; dedicated coverage is part of security hardening. |
-| Frontend application UI | Phase 2 delivers backend APIs and the `/docs` reference only. |
+| Operational theater and reservation screens | Phase 4–6 domain scope. |
 
 ## Test Data
 
@@ -142,10 +144,18 @@ Base path: `/api/v1`
 
 ```text
 php artisan test
-Tests: 29 passed (144 assertions)
+Tests: 51 passed (281 assertions)
 
 vendor/bin/phpstan analyse app/Services/Tenancy Modules/Tenancy/app Modules/Tenancy/routes database/seeders/PlatformDocumentationSeeder.php config/documentation.php --memory-limit=1G
 [OK] No errors
 ```
 
-`GET /docs` returns `200` and renders all 112 documented endpoint methods.
+`GET /docs` returns `200` and renders all 170 documented endpoint methods.
+
+```text
+npm run typecheck
+npm run test
+npm run build
+```
+
+Frontend tests: 7 passed. Production assets build successfully. The browser smoke test covers theater/group/individual registration, OTP, pending group access, team, role creation, invitations, tenant password reset, admin login, and Arabic RTL.

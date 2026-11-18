@@ -18,8 +18,12 @@ class GroupDocumentResource extends JsonResource
             'type' => $this->document_type,
             'name' => $this->original_name,
             'status' => $this->status,
+            'version' => $this->version,
             'rejection_reason' => $this->rejection_reason,
             'admin_note' => $this->admin_note,
+            'reviewed_at' => $this->reviewed_at,
+            'resubmitted_at' => $this->resubmitted_at,
+            'can_resubmit' => in_array($this->status, ['rejected', 'requires_resubmission'], true),
         ];
     }
 }

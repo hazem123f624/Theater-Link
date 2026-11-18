@@ -47,6 +47,7 @@ class TenantProvisioningService
                 'name' => $ownerData['name'],
                 'email' => Str::lower($ownerData['email']),
                 'phone' => $ownerData['phone'] ?? null,
+                'phone_verified_at' => ! empty($ownerData['phone']) ? now() : null,
                 'password' => $ownerData['password'],
                 'is_owner' => true,
                 'is_active' => true,

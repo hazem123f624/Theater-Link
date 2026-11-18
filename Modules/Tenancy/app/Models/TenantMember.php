@@ -17,6 +17,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string $name
  * @property string $email
  * @property string|null $phone
+ * @property \Illuminate\Support\Carbon|null $phone_verified_at
  * @property string $password
  * @property bool $is_owner
  * @property bool $is_active
@@ -44,6 +45,7 @@ class TenantMember extends Authenticatable
         'email',
         'phone',
         'password',
+        'phone_verified_at',
         'is_owner',
         'is_active',
         'last_login_at',
@@ -60,6 +62,7 @@ class TenantMember extends Authenticatable
 
     protected $casts = [
         'tenant_id' => 'integer',
+        'phone_verified_at' => 'datetime',
         'is_owner' => 'boolean',
         'is_active' => 'boolean',
         'last_login_at' => 'datetime',

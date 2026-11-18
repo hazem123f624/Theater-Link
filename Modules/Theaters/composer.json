@@ -1,0 +1,21 @@
+{
+    "name": "theaterlink/theaters",
+    "description": "Theater operations for TheaterLink.",
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {}
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Theaters\\": "app/",
+            "Modules\\Theaters\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\Theaters\\Tests\\": "tests/"
+        }
+    }
+}

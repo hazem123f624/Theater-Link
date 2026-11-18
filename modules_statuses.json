@@ -2,5 +2,6 @@
     "Admins": true,
     "Users": true,
     "Settings": true,
-    "Tenancy": true
+    "Tenancy": true,
+    "Theaters": true
 }

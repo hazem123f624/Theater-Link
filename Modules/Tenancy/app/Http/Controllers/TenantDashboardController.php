@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Traits\HttpResponsesTrait;
 use App\Services\Tenancy\TenantContext;
 use Modules\Tenancy\Resources\TenantTeamMemberResource;
+use Modules\Theaters\Models\Event;
+use Modules\Theaters\Models\Hall;
+use Modules\Theaters\Models\Show;
 
 class TenantDashboardController extends Controller
 {
@@ -16,8 +19,13 @@ class TenantDashboardController extends Controller
     public function theater()
     {
         return $this->summary([
-            'halls_count' => 0,
-            'events_count' => 0,
+            'halls_count' => Hall::query()->count(),
+            'events_count' => Event::query()->count(),
+            'published_events_count' => Event::query()->where('status', 'published')->count(),
+            'upcoming_shows_count' => Show::query()
+                ->where('status', 'scheduled')
+                ->where('starts_at', '>', now())
+                ->count(),
             'pending_reservations_count' => 0,
             'upcoming_reservations_count' => 0,
         ]);

@@ -3,6 +3,7 @@
 namespace App\Services\Tenancy;
 
 use App\Services\MediaSystem\MediaService;
+use App\Services\Notifications\NotificationService;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -11,6 +12,7 @@ use Modules\Tenancy\Enums\GroupApplicationStatus;
 use Modules\Tenancy\Enums\GroupDocumentStatus;
 use Modules\Tenancy\Models\GroupApplication;
 use Modules\Tenancy\Models\GroupApplicationDocument;
+use Modules\Tenancy\Models\GroupApplicationStatusHistory;
 use Modules\Tenancy\Models\GroupProfile;
 use Modules\Tenancy\Models\Tenant;
 use Modules\Tenancy\Models\TheaterProfile;
@@ -21,6 +23,7 @@ class TenantRegistrationService
     public function __construct(
         private TenantProvisioningService $provisioning,
         private MediaService $media,
+        private NotificationService $notifications,
     ) {}
 
     public function temporaryDirectory(string $phone, string $type): string
@@ -129,6 +132,20 @@ class TenantRegistrationService
                 $this->storePermit($application, $permit);
             }
 
+            GroupApplicationStatusHistory::create([
+                'application_id' => $application->id,
+                'to_status' => $application->status,
+                'action' => 'submitted',
+                'note' => __('tenancy::messages.application_submitted_history'),
+            ]);
+
+            $this->notifications->notifyAdmins(
+                'application_submitted',
+                __('tenancy::messages.notification_application_submitted_title'),
+                __('tenancy::messages.notification_application_submitted_body', ['reference' => $application->reference]),
+                ['application_id' => $application->id, 'status' => $application->status],
+            );
+
             return [
                 'tenant' => $tenant->fresh(['members', 'roles']),
                 'application' => $application->fresh('documents'),
@@ -149,6 +166,9 @@ class TenantRegistrationService
                 "group_applications/{$application->id}"
             );
 
+        $application->loadMissing('tenant.members');
+        $ownerId = $application->tenant->members->firstWhere('is_owner', true)?->id;
+
         return GroupApplicationDocument::updateOrCreate(
             [
                 'application_id' => $application->id,
@@ -159,6 +179,8 @@ class TenantRegistrationService
                 'original_name' => $media->original_name,
                 'status' => GroupDocumentStatus::PENDING->value,
                 'rejection_reason' => null,
+                'uploaded_by' => $ownerId,
+                'version' => 1,
             ]
         );
     }

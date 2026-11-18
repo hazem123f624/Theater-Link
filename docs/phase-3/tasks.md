@@ -4,81 +4,92 @@ Status legend: `[x]` implemented, `[~]` partial, `[ ]` not started.
 
 ## 1. Group Application Schema
 
-- [ ] Create the group application record linked one-to-one with a group tenant.
-- [ ] Store the application reference, group information, contact details, and requested subdomain.
-- [ ] Store the current status and previous review status.
-- [ ] Store rejection reason, visible review feedback, and internal notes.
-- [ ] Store reviewer and review/approval timestamps.
-- [ ] Create application document records with type, file, status, feedback, and reviewer.
-- [ ] Store document history instead of overwriting previous versions.
-- [ ] Add indexes for status, reference, tenant, and created date.
+- [x] Create the group application record linked one-to-one with a group tenant.
+- [x] Store the application reference, group information, contact details, and requested subdomain.
+- [x] Store the current status and previous review status.
+- [x] Store rejection reason, visible review feedback, and internal notes.
+- [x] Store reviewer and review/approval timestamps.
+- [x] Create application document records with type, file, status, feedback, and reviewer.
+- [x] Store document history instead of overwriting previous versions.
+- [x] Add indexes for status, reference, tenant, and created date.
 
 ## 2. Admin Review
 
-- [ ] Add an admin application list with search, status filter, and pagination.
-- [ ] Reject invalid status/page-size filters with a validation error.
-- [ ] Add an application detail endpoint with documents and history.
-- [ ] Add an authorized private document download endpoint.
-- [ ] Add an accept-document action.
-- [ ] Add a reject-document action with a reason.
-- [ ] Add a request-resubmission action with feedback.
-- [ ] Recompute the application status after every document action.
-- [ ] Add internal notes that are never exposed to the group.
-- [ ] Add an activity-log entry for every review action.
-- [ ] Enforce a group-application review permission on every endpoint.
+- [x] Add an admin application list with search, status filter, and pagination.
+- [x] Reject invalid status/page-size filters with a validation error.
+- [x] Add an application detail endpoint with documents and history.
+- [x] Add an authorized private document download endpoint.
+- [x] Add an accept-document action.
+- [x] Add a reject-document action with a reason.
+- [x] Add a request-resubmission action with feedback.
+- [x] Recompute the application status after every document action.
+- [x] Add internal notes that are never exposed to the group.
+- [x] Add an activity-log entry for every review action.
+- [x] Enforce a group-application review permission on every endpoint.
 
 ## 3. Approval and Provisioning
 
-- [ ] Approve only when the application is ready for approval.
-- [ ] Require every required document to be accepted.
-- [ ] Require the owner's phone to be verified.
-- [ ] Lock the application row before deciding.
-- [ ] Activate the tenant and application in one transaction.
-- [ ] Assign the owner role and ensure system roles exist.
-- [ ] Make approval idempotent; duplicate approval must not provision twice.
-- [ ] Send notifications only after commit.
-- [ ] Add approval transaction and duplicate-approval tests.
+- [x] Approve only when the application is ready for approval.
+- [x] Require every required document to be accepted.
+- [x] Require the owner's phone to be verified.
+- [x] Lock the application row before deciding.
+- [x] Activate the tenant and application in one transaction.
+- [x] Assign the owner role and ensure system roles exist.
+- [x] Make approval idempotent; duplicate approval must not provision twice.
+- [x] Send notifications only after commit.
+- [x] Add approval transaction and duplicate-approval tests.
 
 ## 4. Rejection, Reopening and Resubmission
 
-- [ ] Reject only an application that is not approved.
-- [ ] Require a rejection reason.
-- [ ] Keep the rejection reason and history after reopening.
-- [ ] Store the review status the rejection came from.
-- [ ] Reopen only a rejected application and restore the previous review state.
-- [ ] Prevent reopening an approved application.
-- [ ] Allow a group to resubmit only a rejected/returned document.
-- [ ] Return the document to Pending and the application to Pending Review after resubmission.
-- [ ] Add rejection, reopen, and resubmission tests.
+- [x] Reject only an application that is not approved.
+- [x] Require a rejection reason.
+- [x] Keep the rejection reason and history after reopening.
+- [x] Store the review status the rejection came from.
+- [x] Reopen only a rejected application and restore the previous review state.
+- [x] Prevent reopening an approved application.
+- [x] Allow a group to resubmit only a rejected/returned document.
+- [x] Return the document to Pending and the application to Pending Review after resubmission.
+- [x] Add rejection, reopen, and resubmission tests.
 
 ## 5. Group Status Page
 
-- [ ] Add the application status endpoint.
-- [ ] Show status, reference, submitted date, rejection reason, and visible feedback.
-- [ ] Show document statuses and per-document feedback.
-- [ ] Show required actions: missing documents and documents needing replacement.
-- [ ] Show workspace status and address.
-- [ ] Show support contact information.
-- [ ] Block every group workspace endpoint while the tenant is pending.
-- [ ] Add pending-access and cross-group isolation tests.
+- [x] Add the application status endpoint.
+- [x] Show status, reference, submitted date, rejection reason, and visible feedback.
+- [x] Show document statuses and per-document feedback.
+- [x] Show required actions: missing documents and documents needing replacement.
+- [x] Show workspace status and address.
+- [x] Show support contact information.
+- [x] Block every group workspace endpoint while the tenant is pending.
+- [x] Add pending-access and cross-group isolation tests.
 
 ## 6. Notifications and Media
 
-- [ ] Add an in-app notification table and service.
-- [ ] Notify group owners about document review, resubmission, approval, and rejection.
-- [ ] Notify central admins about new applications and resubmissions.
-- [ ] Queue email/SMS/push channels through the existing message factory.
-- [ ] Send notifications only after the transaction commits.
-- [ ] Store permits on a private disk.
-- [ ] Require authorization for every document download.
-- [ ] Log document access.
+- [x] Add an in-app notification table and service.
+- [x] Notify group owners about document review, resubmission, approval, and rejection.
+- [x] Notify central admins about new applications and resubmissions.
+- [x] Queue email/SMS/push channels through the existing message factory.
+- [x] Send notifications only after the transaction commits.
+- [x] Store permits on a private disk.
+- [x] Require authorization for every document download.
+- [x] Log document access.
 
 ## 7. Documentation and Verification
 
-- [ ] Document all Phase 3 endpoints.
-- [ ] Add Phase 3 cases to the Postman collection.
-- [ ] Add feature tests for review, approval, rejection, reopening, resubmission, and authorization.
-- [ ] Run the Phase 3 test suite and static analysis.
+- [x] Document all Phase 3 endpoints.
+- [x] Add Phase 3 cases to the Postman collection.
+- [x] Add feature tests for review, approval, rejection, reopening, resubmission, and authorization.
+- [x] Run the Phase 3 test suite and static analysis.
+
+## 8. Frontend
+
+- [x] Add the admin group-applications list with search, status filter, pagination, and permission-aware navigation.
+- [x] Add the admin application detail page with group/owner information, documents, review history, blockers, and internal notes.
+- [x] Add document preview/download, accept, reject, and request-resubmission actions.
+- [x] Add approve, reject, reopen, suspend, and reactivate workspace actions.
+- [x] Add group document downloads, replacement upload, and application history.
+- [x] Add the notification bell with unread count, mark-read actions, and application deep links.
+- [x] Add English/Arabic labels for all Phase 3 UI.
+- [x] Extend the browser smoke test through document rejection, group resubmission, approval, dashboard access, and notifications.
 
 ## Definition of Done
 
