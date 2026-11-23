@@ -2,7 +2,7 @@
 
 This folder holds the product and engineering documentation for the TheaterLink backend.
 
-> **Current status — 2026-11-18:** Phase 1 analysis, Phase 2, Phase 3, and Phase 4 are complete and verified. Phase 4 adds theater profile management, halls, weekly schedules, materialized slot availability, maintenance blocks, events with Arabic/English content, shows, ticket tiers, and the public theater/event catalog. The custom QEEI-style API reference at `/docs` covers all 170 API endpoint methods, and a 103-request Phase 2–4 Postman collection is available at [`postman/TheaterLink-Phase-2.postman_collection.json`](postman/TheaterLink-Phase-2.postman_collection.json). Phase 5 group reservations is next.
+> **Current status — 2026-11-19:** Phase 1 analysis and Phases 2–6 are complete and verified. Phase 6 adds public show availability, individual ticket bookings with atomic inventory and idempotency, ticket issuance, QR validation, booking cancellation, and real booking counters. The custom QEEI-style API reference at `/docs` covers all 194 API endpoint methods, and a 127-request Phase 2–6 Postman collection is available at [`postman/TheaterLink-Phase-2.postman_collection.json`](postman/TheaterLink-Phase-2.postman_collection.json). The six planned product phases are complete; administration screens, reporting, and production hardening remain future work.
 
 | File | What it covers |
 |---|---|
@@ -16,7 +16,7 @@ This folder holds the product and engineering documentation for the TheaterLink 
 | [`phase-3/`](phase-3/README.md) | Phase 3 admin review, document review, approval, rejection, resubmission, and provisioning tasks and test cases. |
 | [`phase-4/`](phase-4/README.md) | Phase 4 theater profile, halls, schedules, availability, events, and ticket tiers tasks and test cases. |
 | [`phase-5/`](phase-5/README.md) | Phase 5 group management, theater discovery, reservation requests, and reservation lifecycle tasks and test cases. |
-| [`phase-6/`](phase-6/README.md) | Phase 6 individual event discovery, shows, ticket tiers, inventory, and booking tasks and test cases. |
+| [`phase-6/`](phase-6/README.md) | Phase 6 public show availability, booking inventory, tickets, QR validation, cancellation, and test cases. |
 
 ## Architecture Decisions
 
@@ -35,7 +35,7 @@ The full comparison and rationale are in [`phase-1-technical-analysis.md`](phase
 ## Quick Links
 
 - API documentation page: `/docs`
-- Phase 2 Postman collection: [`postman/TheaterLink-Phase-2.postman_collection.json`](postman/TheaterLink-Phase-2.postman_collection.json)
+- Phase 2–6 Postman collection: [`postman/TheaterLink-Phase-2.postman_collection.json`](postman/TheaterLink-Phase-2.postman_collection.json)
 - API base path: `/api/v1`
 - Tenant login: `POST /api/v1/theater/login`, `POST /api/v1/group/login`
 - Tenant profile: `GET /api/v1/tenant/me`

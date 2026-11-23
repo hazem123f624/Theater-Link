@@ -233,6 +233,9 @@ export interface AppNotification {
     data: {
         application_id?: number;
         document_id?: number;
+        reservation_id?: number;
+        booking_id?: number;
+        ticket_id?: number;
         status?: string;
     } | null;
     read_at: string | null;
@@ -451,7 +454,7 @@ export interface TenantDashboard {
 export interface UserDashboard {
     user: UserProfile;
     bookings_count: number;
-    upcoming_bookings: unknown[];
+    upcoming_bookings: BookingRecord[];
 }
 
 export interface AdminCounts {
@@ -477,4 +480,166 @@ export interface City {
     name_ar: string;
     name_en: string;
     setting_id: number;
+}
+
+export interface GroupProfileData {
+    id: number;
+    tenant_id: number;
+    name: string;
+    description: string | null;
+    contact_person_name: string | null;
+    email: string | null;
+    phone: string | null;
+    logo_url: string | null;
+    is_active: boolean;
+}
+
+export interface ReservationHistory {
+    id: number;
+    from_status: string | null;
+    to_status: string;
+    action: string;
+    actor_type: string;
+    actor_id: number | null;
+    note: string | null;
+    created_at: string;
+}
+
+export interface ReservationRecord {
+    id: number;
+    reference: string;
+    status: string;
+    price: string;
+    currency: string;
+    hold_expires_at: string;
+    approved_at: string | null;
+    rejected_at: string | null;
+    cancelled_at: string | null;
+    completed_at: string | null;
+    rejection_reason: string | null;
+    cancellation_reason: string | null;
+    theater: {
+        id: number | null;
+        name: string | null;
+        subdomain: string | null;
+        logo_url: string | null;
+        address: string | null;
+    };
+    group: {
+        id: number | null;
+        name: string | null;
+        subdomain: string | null;
+        logo_url: string | null;
+        contact_person_name: string | null;
+        email: string | null;
+        phone: string | null;
+    };
+    hall: { id: number; name: string; capacity: number } | null;
+    slot: {
+        id: number;
+        starts_at: string;
+        ends_at: string;
+        starts_at_local: string;
+        ends_at_local: string;
+        timezone: string;
+    } | null;
+    requested_by: { id: number; name: string } | null;
+    history: ReservationHistory[];
+    created_at: string;
+}
+
+export interface BookingTicketRecord {
+    id: number;
+    ticket_number: string;
+    qr_token: string;
+    status: string;
+    sequence: number;
+    tier_name: string | null;
+    used_at: string | null;
+    cancelled_at: string | null;
+    expired_at: string | null;
+    created_at: string;
+}
+
+export interface BookingItemRecord {
+    id: number;
+    ticket_tier_id: number;
+    name: string | null;
+    name_en: string | null;
+    name_ar: string | null;
+    unit_price: string;
+    currency: string;
+    quantity: number;
+    line_total: string;
+}
+
+export interface BookingHistoryRecord {
+    id: number;
+    from_status: string | null;
+    to_status: string;
+    action: string;
+    actor_type: string;
+    actor_id: number | null;
+    note: string | null;
+    created_at: string;
+}
+
+export interface BookingRecord {
+    id: number;
+    reference: string;
+    status: string;
+    subtotal: string;
+    total: string;
+    currency: string;
+    ticket_count: number;
+    confirmed_at: string | null;
+    cancelled_at: string | null;
+    cancellation_reason: string | null;
+    event: {
+        id: number;
+        slug: string;
+        title: string | null;
+        title_en: string | null;
+        title_ar: string | null;
+        poster_url: string | null;
+    } | null;
+    show: {
+        id: number;
+        starts_at: string;
+        ends_at: string;
+        starts_at_local: string;
+        ends_at_local: string;
+        timezone: string;
+        status: string;
+        cancellation_cutoff_at: string;
+    } | null;
+    theater: {
+        id: number | null;
+        name: string | null;
+        subdomain: string | null;
+        logo_url: string | null;
+        address: string | null;
+    };
+    hall: { id: number; name: string; capacity: number } | null;
+    user?: { id: number; name: string; email: string | null; phone: string | null };
+    items: BookingItemRecord[];
+    tickets: BookingTicketRecord[];
+    history: BookingHistoryRecord[];
+    created_at: string;
+}
+
+export interface PublicShowTierRecord extends TicketTierRecord {
+    is_on_sale: boolean;
+    can_book: boolean;
+    sale_state: string;
+}
+
+export interface PublicShowTiersResponse {
+    show: {
+        id: number;
+        starts_at: string;
+        ends_at: string;
+        status: string;
+    };
+    tiers: PublicShowTierRecord[];
 }

@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Modules\Admins\Interfaces\AdminsInterface;
 use Modules\Admins\Models\Admins;
+use Modules\Bookings\Models\Booking;
+use Modules\Reservations\Models\Reservation;
 use Modules\Tenancy\Enums\GroupApplicationStatus;
 use Modules\Tenancy\Enums\TenantType;
 use Modules\Tenancy\Models\GroupApplication;
@@ -157,8 +159,8 @@ class AdminsRepository implements AdminsInterface
                         GroupApplicationStatus::READY_FOR_REVIEW->value,
                     ])
                     ->count(),
-                'reservations_count' => 0,
-                'bookings_count' => 0,
+                'reservations_count' => Reservation::query()->count(),
+                'bookings_count' => Booking::query()->count(),
             ];
         } catch (\Exception $exception) {
             throw new \Exception($exception->getMessage());

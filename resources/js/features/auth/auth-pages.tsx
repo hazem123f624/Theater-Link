@@ -177,6 +177,7 @@ export function LandingPage() {
 export function LoginPage({ actor }: { actor: Actor }) {
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
     const session = useAuthStore((state) => state.session);
     const setSession = useAuthStore((state) => state.setSession);
     const [subdomain, setSubdomain] = useState('');
@@ -210,7 +211,9 @@ export function LoginPage({ actor }: { actor: Actor }) {
                 const user = await loginUser({ country_code: countryCode, phone, password });
                 setSession(userSession(user));
                 toast.success(t('auth.welcomeBack'));
-                navigate('/user', { replace: true });
+                const redirect = searchParams.get('redirect');
+                const target = redirect && redirect.startsWith('/') && !redirect.startsWith('//') ? redirect : '/user';
+                navigate(target, { replace: true });
             } else {
                 const payload: AdminLoginPayload = { email, password };
                 const admin = await loginAdmin(payload);

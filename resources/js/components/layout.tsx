@@ -6,6 +6,7 @@ import {
     CalendarDays,
     ChevronDown,
     ClipboardList,
+    Compass,
     FileText,
     Globe2,
     LayoutDashboard,
@@ -167,6 +168,7 @@ export function DashboardLayout() {
         : actor === 'user'
             ? [
                 { to: '/user', label: t('nav.dashboard'), icon: <LayoutDashboard size={18} />, end: true },
+                { to: '/user/bookings', label: t('nav.bookings'), icon: <Ticket size={18} /> },
                 { to: '/user/profile', label: t('nav.profile'), icon: <UserRound size={18} /> },
                 { to: '/user/security', label: t('nav.security'), icon: <ShieldCheck size={18} /> },
             ]
@@ -180,6 +182,12 @@ export function DashboardLayout() {
                     ...(actor === 'theater' ? [
                         { to: '/theater/halls', label: t('nav.halls'), icon: <Building2 size={18} />, permission: 'halls.fetch' },
                         { to: '/theater/events', label: t('nav.events'), icon: <CalendarDays size={18} />, permission: 'events.fetch' },
+                        { to: '/theater/reservations', label: t('nav.reservations'), icon: <Ticket size={18} />, permission: 'reservations.fetch' },
+                        { to: '/theater/bookings', label: t('nav.bookings'), icon: <Ticket size={18} />, permission: 'bookings.fetch' },
+                    ] : []),
+                    ...(actor === 'group' ? [
+                        { to: '/group/theaters', label: t('nav.discover'), icon: <Compass size={18} />, permission: 'reservations.fetch' },
+                        { to: '/group/reservations', label: t('nav.reservations'), icon: <Ticket size={18} />, permission: 'reservations.fetch' },
                     ] : []),
                     { to: `/${actor}/team`, label: t('nav.team'), icon: <Users size={18} />, permission: 'team.fetch' },
                     { to: `/${actor}/roles`, label: t('nav.roles'), icon: <ShieldCheck size={18} />, permission: 'roles.fetch' },

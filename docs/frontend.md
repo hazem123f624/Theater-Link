@@ -1,6 +1,6 @@
 # TheaterLink Frontend
 
-The Phase 2 web frontend is a React single-page application served by the Laravel application.
+The TheaterLink web frontend is a React single-page application served by the Laravel application.
 
 ## Stack
 
@@ -22,9 +22,9 @@ The Phase 2 web frontend is a React single-page application served by the Larave
 | Authentication | `/theater/login`, `/group/login`, `/user/login`, `/admin/login` |
 | Password reset | `/forgot-password/theater`, `/forgot-password/group`, `/forgot-password/user`, `/forgot-password/admin` |
 | Invitations | `/invitations/accept?token=...` |
-| Theater | `/theater`, `/theater/halls`, `/theater/halls/:id`, `/theater/events`, `/theater/events/:id`, `/theater/shows/:id/tiers`, `/theater/team`, `/theater/team/trash`, `/theater/roles`, `/theater/invitations`, `/theater/account` |
-| Group | `/group`, `/group/application`, `/group/team`, `/group/team/trash`, `/group/roles`, `/group/invitations`, `/group/account` |
-| Individual | `/user`, `/user/profile`, `/user/security` |
+| Theater | `/theater`, `/theater/halls`, `/theater/halls/:id`, `/theater/events`, `/theater/events/:id`, `/theater/shows/:id/tiers`, `/theater/reservations`, `/theater/reservations/:id`, `/theater/bookings`, `/theater/bookings/:id`, `/theater/tickets/validate`, `/theater/team`, `/theater/team/trash`, `/theater/roles`, `/theater/invitations`, `/theater/account` |
+| Group | `/group`, `/group/application`, `/group/theaters`, `/group/theaters/:id`, `/group/reservations`, `/group/reservations/:id`, `/group/team`, `/group/team/trash`, `/group/roles`, `/group/invitations`, `/group/account` |
+| Individual | `/user`, `/user/bookings`, `/user/bookings/:id`, `/user/profile`, `/user/security` |
 | Admin | `/admin`, `/admin/applications`, `/admin/applications/:id`, `/admin/profile` |
 | Public catalog | `/theaters`, `/theaters/:id`, `/events`, `/events/:slug` |
 
@@ -71,6 +71,6 @@ The smoke test uses `/usr/bin/google-chrome` by default. Override with `CHROME_P
 
 ## Current scope
 
-The frontend covers the Phase 2, Phase 3, and Phase 4 surfaces: registration/OTP, workspace authentication, pending group applications, team management, invitations, custom roles, password reset, individual profile/security, admin group-application review, document decisions, resubmission, notifications, workspace suspension, theater profile management, halls, schedules, availability, events, shows, ticket tiers, and the public theater/event catalog.
+The frontend covers the Phase 2, Phase 3, Phase 4, and Phase 5 surfaces: registration/OTP, workspace authentication, pending group applications, team management, invitations, custom roles, password reset, individual profile/security, admin group-application review, document decisions, resubmission, notifications, workspace suspension, theater profile management, halls, schedules, availability, events, shows, ticket tiers, group profile and theater discovery, hall reservation requests, theater reservation review, public event booking, individual booking/QR pages, theater booking management, ticket validation, and the public theater/event catalog.
 
-Phase 5 and 6 operational screens are intentionally not part of this frontend yet.
+The six planned product phases are implemented. Admin management screens, reporting, and production hardening remain future work.

@@ -42,6 +42,7 @@ return [
         ['name' => 'bookings.fetch', 'module' => 'bookings', 'action' => 'fetch', 'types' => ['theater'], 'title' => ['en' => 'View bookings', 'ar' => 'عرض حجوزات التذاكر']],
         ['name' => 'bookings.read', 'module' => 'bookings', 'action' => 'read', 'types' => ['theater'], 'title' => ['en' => 'View booking details', 'ar' => 'عرض تفاصيل حجز التذاكر']],
         ['name' => 'bookings.cancel', 'module' => 'bookings', 'action' => 'cancel', 'types' => ['theater'], 'title' => ['en' => 'Cancel bookings', 'ar' => 'إلغاء حجوزات التذاكر']],
+        ['name' => 'tickets.validate', 'module' => 'tickets', 'action' => 'validate', 'types' => ['theater'], 'title' => ['en' => 'Validate entry tickets', 'ar' => 'التحقق من تذاكر الدخول']],
         ['name' => 'reports.read', 'module' => 'reports', 'action' => 'read', 'types' => ['theater', 'group'], 'title' => ['en' => 'View reports', 'ar' => 'عرض التقارير']],
     ],
 
@@ -55,15 +56,15 @@ return [
                 'events.fetch', 'events.create', 'events.update', 'events.publish',
                 'ticket_tiers.fetch', 'ticket_tiers.create', 'ticket_tiers.update',
                 'reservations.fetch', 'reservations.read', 'reservations.approve', 'reservations.reject',
-                'bookings.fetch', 'bookings.read', 'reports.read',
+                'bookings.fetch', 'bookings.read', 'tickets.validate', 'reports.read',
             ]],
             'operations' => ['name' => 'Operations', 'permissions' => [
                 'halls.fetch', 'hall_schedules.fetch', 'events.fetch', 'events.create', 'events.update',
                 'ticket_tiers.fetch', 'reservations.fetch', 'reservations.read', 'reservations.approve',
-                'reservations.reject', 'bookings.fetch', 'bookings.read',
+                'reservations.reject', 'bookings.fetch', 'bookings.read', 'tickets.validate',
             ]],
             'box_office' => ['name' => 'Box Office', 'permissions' => [
-                'events.fetch', 'ticket_tiers.fetch', 'bookings.fetch', 'bookings.read', 'bookings.cancel',
+                'events.fetch', 'ticket_tiers.fetch', 'bookings.fetch', 'bookings.read', 'bookings.cancel', 'tickets.validate',
             ]],
             'viewer' => ['name' => 'Viewer', 'permissions' => [
                 'halls.fetch', 'hall_schedules.fetch', 'events.fetch', 'ticket_tiers.fetch',

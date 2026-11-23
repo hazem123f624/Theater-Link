@@ -1,0 +1,11 @@
+{
+    "name": "Bookings",
+    "alias": "bookings",
+    "description": "Individual event ticket bookings, inventory, tickets, QR validation, and cancellation.",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Bookings\\Providers\\BookingsServiceProvider"
+    ],
+    "files": []
+}

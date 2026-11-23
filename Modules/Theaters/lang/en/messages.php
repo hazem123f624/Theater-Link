@@ -46,7 +46,7 @@ return [
     'tier_below_inventory' => 'The tier quantity cannot be lower than sold and held tickets.',
     'hall_has_future_shows' => 'A hall with future shows cannot be deleted.',
     'event_has_bookings' => 'This event cannot be unpublished while it has active bookings.',
-    'event_cancelled' => 'This event has been cancelled.',
+    'event_is_cancelled' => 'This event has been cancelled.',
     'slot_blocked_conflict' => 'The selected period overlaps a held or reserved slot.',
     'public_visibility_only' => 'Only published events are available publicly.',
     'timezone' => 'Timezone',

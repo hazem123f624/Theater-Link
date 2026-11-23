@@ -14,11 +14,11 @@ TheaterLink is a multi-tenant theater management and booking platform. The backe
 
 ## Current Scope
 
-Phase 1 analysis and Phases 2–4 are complete and verified with:
+Phase 1 analysis and Phases 2–6 are complete and verified with:
 
 - Lean modular project scaffold.
 - Shared OTP, media, messaging, security, activity-log, repository, response, and localization infrastructure.
-- `Admins`, `Users`, `Settings`, and `Tenancy` modules.
+- `Admins`, `Users`, `Settings`, `Tenancy`, `Theaters`, `Reservations`, and `Bookings` modules.
 - Tenant, tenant-member, role, permission, invitation, profile, and application schema.
 - Tenant provisioning with system roles and owner assignment.
 - Theater registration with OTP, theater profile, and owner token issuance.
@@ -31,11 +31,13 @@ Phase 1 analysis and Phases 2–4 are complete and verified with:
 - React + TypeScript web frontend for registration, all four dashboards, team management, invitations, custom roles, password reset, account security, admin group-application review, document decisions, notifications, and group resubmission.
 - Admin group-application review, private document access, document decisions, transactional approval/rejection/reopening, group resubmission, notes, workspace suspension, and notifications.
 - Theater profile management, halls, weekly schedules, materialized slots, maintenance blocks, events, shows, ticket tiers, and public catalog APIs.
-- English and Arabic localization with RTL support, tenant isolation tests, permission tests, and Phase 3 review workflow tests.
+- Group profiles, theater discovery, hall availability, transactional reservation holds, theater approval/rejection, cancellation policies, expiry/completion jobs, and reservation notifications.
+- Public show availability, individual ticket bookings with atomic inventory, idempotency, ticket issuance, QR validation, and booking cancellation.
+- English and Arabic localization with RTL support, tenant isolation tests, permission tests, reservation and booking lifecycle tests, and Phase 3 review workflow tests.
 
-The web frontend is a React + TypeScript SPA served by Laravel. It covers public registration, all four sign-in surfaces, tenant dashboards, team management, invitations, custom roles, password reset, admin group-application review, document decisions, notifications, group resubmission, theater profile/hall/schedule/event/show/tier management, and the public theater/event catalog. See [`docs/frontend.md`](docs/frontend.md).
+The web frontend is a React + TypeScript SPA served by Laravel. It covers public registration, all four sign-in surfaces, tenant dashboards, team management, invitations, custom roles, password reset, admin group-application review, document decisions, notifications, group resubmission, theater profile/hall/schedule/event/show/tier management, group theater discovery and reservations, theater reservation review, public event booking, individual ticket pages, theater booking management, ticket validation, and the public theater/event catalog. See [`docs/frontend.md`](docs/frontend.md).
 
-API documentation is available at `/docs`. A Phase 2–4 Postman collection is in [`docs/postman/TheaterLink-Phase-2.postman_collection.json`](docs/postman/TheaterLink-Phase-2.postman_collection.json).
+API documentation is available at `/docs`. A Phase 2–6 Postman collection is in [`docs/postman/TheaterLink-Phase-2.postman_collection.json`](docs/postman/TheaterLink-Phase-2.postman_collection.json).
 
 See [`docs/README.md`](docs/README.md) for the full phase plan and [`docs/phase-1-technical-analysis.md`](docs/phase-1-technical-analysis.md) for the architecture analysis.
 

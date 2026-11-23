@@ -3,5 +3,7 @@
     "Users": true,
     "Settings": true,
     "Tenancy": true,
-    "Theaters": true
+    "Theaters": true,
+    "Reservations": true,
+    "Bookings": true
 }

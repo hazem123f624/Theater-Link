@@ -17,9 +17,13 @@ return [
     */
     'booking_lead_minutes' => (int) env('THEATERLINK_BOOKING_LEAD_MINUTES', 60),
 
+    'booking_cancellation_cutoff_hours' => (int) env('THEATERLINK_BOOKING_CANCEL_CUTOFF_HOURS', 24),
+
     'default_currency' => env('THEATERLINK_CURRENCY', 'SAR'),
 
     'timezone' => env('THEATERLINK_TIMEZONE', 'Asia/Riyadh'),
+
+    'reservation_group_cancellation_cutoff_hours' => (int) env('THEATERLINK_GROUP_CANCEL_CUTOFF_HOURS', 24),
 
     'workspace' => [
         'base_url' => env('THEATERLINK_WORKSPACE_BASE_URL', env('APP_URL', 'http://theaterlink.test')),

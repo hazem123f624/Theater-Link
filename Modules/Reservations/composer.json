@@ -1,0 +1,21 @@
+{
+    "name": "theaterlink/reservations",
+    "description": "Hall reservations for TheaterLink.",
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {}
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Reservations\\": "app/",
+            "Modules\\Reservations\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\Reservations\\Tests\\": "tests/"
+        }
+    }
+}
