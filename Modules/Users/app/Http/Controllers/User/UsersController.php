@@ -10,6 +10,9 @@ use App\Services\OtpService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
+use Modules\Bookings\Http\Resources\BookingResource;
+use Modules\Bookings\Models\Booking;
+use Modules\Bookings\Services\BookingService;
 use Modules\Users\Http\Requests\ChangePasswordRequest;
 use Modules\Users\Http\Requests\DeleteAccountRequest;
 use Modules\Users\Http\Requests\UpdateProfileRequest;
@@ -120,8 +123,10 @@ class UsersController extends AuthController
 
         return $this->success(__('users::messages.dashboard_retrieved'), [
             'user' => new UserResource($user),
-            'bookings_count' => 0,
-            'upcoming_bookings' => [],
+            'bookings_count' => Booking::query()->where('user_id', $user->id)->count(),
+            'upcoming_bookings' => BookingResource::collection(
+                app(BookingService::class)->upcomingForUser($user)
+            )->resolve(),
         ]);
     }
 

@@ -14,6 +14,7 @@ use Modules\Tenancy\Models\Tenant;
  * @property int|null $hall_schedule_id
  * @property int|null $block_id
  * @property int|null $show_id
+ * @property int|null $reservation_id
  * @property \Illuminate\Support\Carbon $starts_at
  * @property \Illuminate\Support\Carbon $ends_at
  * @property string $status
@@ -33,7 +34,7 @@ class HallTimeSlot extends Model
     protected $table = 'hall_time_slots';
 
     protected $fillable = [
-        'tenant_id', 'hall_id', 'hall_schedule_id', 'block_id', 'show_id',
+        'tenant_id', 'hall_id', 'hall_schedule_id', 'block_id', 'show_id', 'reservation_id',
         'starts_at', 'ends_at', 'status', 'price', 'currency',
     ];
 
@@ -43,6 +44,7 @@ class HallTimeSlot extends Model
         'hall_schedule_id' => 'integer',
         'block_id' => 'integer',
         'show_id' => 'integer',
+        'reservation_id' => 'integer',
         'starts_at' => 'datetime',
         'ends_at' => 'datetime',
         'price' => 'decimal:2',
@@ -72,5 +74,10 @@ class HallTimeSlot extends Model
     public function tenant(): BelongsTo
     {
         return $this->belongsTo(Tenant::class);
+    }
+
+    public function reservation(): BelongsTo
+    {
+        return $this->belongsTo(\Modules\Reservations\Models\Reservation::class, 'reservation_id');
     }
 }

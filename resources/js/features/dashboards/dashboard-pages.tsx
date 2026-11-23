@@ -68,30 +68,30 @@ export function TheaterDashboardPage() {
                 </div>
             </div>
 
-            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-                {dashboard.isLoading ? [1, 2, 3, 4].map((item) => <Skeleton key={item} className="h-32" />) : (
+            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                {dashboard.isLoading ? [1, 2, 3, 4, 5, 6].map((item) => <Skeleton key={item} className="h-32" />) : (
                     <>
                         <StatCard label={t('dashboard.halls')} value={counts.halls_count ?? 0} icon={<LayoutDashboard size={20} />} />
                         <StatCard label={t('dashboard.events')} value={counts.events_count ?? 0} icon={<CalendarDays size={20} />} />
                         <StatCard label={t('dashboard.upcomingShows')} value={counts.upcoming_shows_count ?? 0} icon={<Clock3 size={20} />} />
                         <StatCard label={t('dashboard.pendingReservations')} value={counts.pending_reservations_count ?? 0} icon={<Ticket size={20} />} />
+                        <StatCard label={t('dashboard.bookings')} value={counts.bookings_count ?? 0} icon={<Ticket size={20} />} />
+                        <StatCard label={t('dashboard.upcomingBookings')} value={counts.upcoming_bookings_count ?? 0} icon={<CalendarDays size={20} />} />
                     </>
                 )}
             </div>
 
-            <div className="mt-6 grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
-                <div className="card card-body">
-                    <h3 className="font-semibold text-ink-950">{t('dashboard.quickActions')}</h3>
-                    <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                        <QuickAction to="/theater/team" icon={<Users size={18} />} title={t('nav.team')} />
-                        <QuickAction to="/theater/roles" icon={<ShieldCheck size={18} />} title={t('nav.roles')} />
-                        <QuickAction to="/theater/invitations" icon={<Mail size={18} />} title={t('nav.invitations')} />
-                        <QuickAction to="/theater/account" icon={<FileText size={18} />} title={t('nav.account')} />
-                    </div>
+            <div className="mt-6 card card-body">
+                <h3 className="font-semibold text-ink-950">{t('dashboard.quickActions')}</h3>
+                <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+                    <QuickAction to="/theater/bookings" icon={<Ticket size={18} />} title={t('nav.bookings')} />
+                    <QuickAction to="/theater/tickets/validate" icon={<CheckCircle2 size={18} />} title={t('bookingOps.theater.validate')} />
+                    <QuickAction to="/theater/reservations" icon={<Ticket size={18} />} title={t('nav.reservations')} />
+                    <QuickAction to="/theater/team" icon={<Users size={18} />} title={t('nav.team')} />
+                    <QuickAction to="/theater/roles" icon={<ShieldCheck size={18} />} title={t('nav.roles')} />
+                    <QuickAction to="/theater/invitations" icon={<Mail size={18} />} title={t('nav.invitations')} />
+                    <QuickAction to="/theater/account" icon={<FileText size={18} />} title={t('nav.account')} />
                 </div>
-                <Alert tone="info" title={t('common.comingSoon')}>
-                    {t('dashboard.phaseNote')}
-                </Alert>
             </div>
         </TenantPage>
     );
@@ -116,6 +116,8 @@ export function GroupDashboardPage() {
                 <p className="mt-1 text-sm text-white/60">{tenant?.subdomain}.theaterlink</p>
                 <div className="mt-5 flex flex-wrap gap-2">
                     <Link to="/group/team" className="btn bg-white/10 text-white hover:bg-white/15"><Users size={16} /> {t('dashboard.manageTeam')}</Link>
+                    <Link to="/group/theaters" className="btn bg-white/10 text-white hover:bg-white/15"><MapPin size={16} /> {t('nav.discover')}</Link>
+                    <Link to="/group/reservations" className="btn bg-white/10 text-white hover:bg-white/15"><CalendarDays size={16} /> {t('nav.reservations')}</Link>
                     <Link to="/group/account" className="btn bg-white/10 text-white hover:bg-white/15"><FileText size={16} /> {t('nav.account')}</Link>
                 </div>
             </div>
@@ -130,8 +132,14 @@ export function GroupDashboardPage() {
                 )}
             </div>
 
-            <div className="mt-6">
-                <Alert tone="info" title={t('common.comingSoon')}>{t('dashboard.phaseNote')}</Alert>
+            <div className="mt-6 card card-body">
+                <h3 className="font-semibold text-ink-950">{t('dashboard.quickActions')}</h3>
+                <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+                    <QuickAction to="/group/theaters" icon={<MapPin size={18} />} title={t('nav.discover')} />
+                    <QuickAction to="/group/reservations" icon={<Ticket size={18} />} title={t('nav.reservations')} />
+                    <QuickAction to="/group/team" icon={<Users size={18} />} title={t('nav.team')} />
+                    <QuickAction to="/group/account" icon={<FileText size={18} />} title={t('nav.account')} />
+                </div>
             </div>
         </TenantPage>
     );
@@ -422,6 +430,8 @@ export function UserDashboardPage() {
                 <h2 className="mt-2 text-2xl font-bold">{user?.name ?? session?.user?.name}</h2>
                 <p className="mt-1 text-sm text-white/60">{user?.phone ?? session?.user?.phone}</p>
                 <div className="mt-5 flex flex-wrap gap-2">
+                    <Link to="/user/bookings" className="btn bg-white/10 text-white hover:bg-white/15"><Ticket size={16} /> {t('nav.bookings')}</Link>
+                    <Link to="/events" className="btn bg-white/10 text-white hover:bg-white/15"><CalendarDays size={16} /> {t('theaterOps.public.eventsTitle')}</Link>
                     <Link to="/user/profile" className="btn bg-white/10 text-white hover:bg-white/15">{t('common.profile')}</Link>
                     <Link to="/user/security" className="btn bg-white/10 text-white hover:bg-white/15">{t('nav.security')}</Link>
                 </div>
@@ -433,12 +443,29 @@ export function UserDashboardPage() {
             </div>
 
             <div className="mt-6">
-                <EmptyState
-                    title={t('dashboard.noBookings')}
-                    description={t('dashboard.userSubtitle')}
-                    icon={<Ticket size={22} />}
-                    action={<Link to="/user/profile" className="btn-secondary">{t('common.profile')}</Link>}
-                />
+                {dashboard.data && dashboard.data.upcoming_bookings.length > 0 ? (
+                    <div className="grid gap-3 md:grid-cols-2">
+                        {dashboard.data.upcoming_bookings.map((booking) => (
+                            <Link key={booking.id} to={`/user/bookings/${booking.id}`} className="card card-body transition hover:-translate-y-0.5 hover:shadow-lg">
+                                <div className="flex items-start justify-between gap-3">
+                                    <div>
+                                        <p className="font-semibold text-ink-950">{booking.event?.title ?? '—'}</p>
+                                        <p className="mt-1 text-xs text-ink-500">{booking.show?.starts_at_local ?? '—'} · {booking.hall?.name ?? ''}</p>
+                                    </div>
+                                    <Badge tone={statusTone(booking.status)}>{t(`bookingOps.status.${booking.status}`, { defaultValue: humanize(booking.status) })}</Badge>
+                                </div>
+                                <div className="mt-3 flex items-center justify-between text-xs text-ink-500"><span>{booking.ticket_count} {t('bookingOps.user.tickets')}</span><span className="font-semibold text-brand-700">{booking.reference}</span></div>
+                            </Link>
+                        ))}
+                    </div>
+                ) : (
+                    <EmptyState
+                        title={t('dashboard.noBookings')}
+                        description={t('dashboard.userSubtitle')}
+                        icon={<Ticket size={22} />}
+                        action={<Link to="/events" className="btn-secondary">{t('theaterOps.public.eventsTitle')}</Link>}
+                    />
+                )}
             </div>
         </TenantPage>
     );

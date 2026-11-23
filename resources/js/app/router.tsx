@@ -19,6 +19,7 @@ import {
     UserDashboardPage,
 } from '@/features/dashboards/dashboard-pages';
 import { AdminApplicationsPage } from '@/features/admin-applications/admin-applications-page';
+import { TheaterBookingDetailPage, TheaterBookingsPage, TicketValidationPage, UserBookingDetailPage, UserBookingsPage } from '@/features/bookings/booking-pages';
 import { AdminApplicationDetailPage } from '@/features/admin-applications/admin-application-detail-page';
 import { TeamPage, TeamTrashPage } from '@/features/team/team-pages';
 import { RolesPage } from '@/features/roles/roles-page';
@@ -27,6 +28,15 @@ import { HallDetailPage, HallsPage } from '@/features/halls/halls-pages';
 import { EventDetailPage, EventsPage, ShowTiersPage } from '@/features/events/events-pages';
 import { TheaterProfilePage } from '@/features/theater-profile/theater-profile-page';
 import { PublicEventPage, PublicEventsPage, PublicTheaterPage, PublicTheatersPage } from '@/features/public/public-pages';
+import {
+    GroupProfilePage,
+    GroupReservationDetailPage,
+    GroupReservationsPage,
+    GroupTheaterPage,
+    GroupTheatersPage,
+    TheaterReservationDetailPage,
+    TheaterReservationsPage,
+} from '@/features/reservations/reservation-pages';
 import {
     AdminProfilePage,
     TenantAccountPage,
@@ -85,6 +95,16 @@ function GroupDashboardGate() {
     return <GroupDashboardPage />;
 }
 
+function GroupAccountGate() {
+    const session = useAuthStore((state) => state.session);
+
+    if (session?.tenant?.status !== 'active') {
+        return <TenantAccountPage />;
+    }
+
+    return <GroupProfilePage />;
+}
+
 function ForgotPasswordRoute() {
     const { actor } = useParams();
     const validActors: Actor[] = ['theater', 'group', 'user', 'admin'];
@@ -119,6 +139,11 @@ export const router = createBrowserRouter([
             { path: 'events', element: <RequirePermission permission="events.fetch"><EventsPage /></RequirePermission> },
             { path: 'events/:id', element: <RequirePermission permission="events.fetch"><EventDetailPage /></RequirePermission> },
             { path: 'shows/:id/tiers', element: <RequirePermission permission="ticket_tiers.fetch"><ShowTiersPage /></RequirePermission> },
+            { path: 'reservations', element: <RequirePermission permission="reservations.fetch"><TheaterReservationsPage /></RequirePermission> },
+            { path: 'reservations/:id', element: <RequirePermission permission="reservations.read"><TheaterReservationDetailPage /></RequirePermission> },
+            { path: 'bookings', element: <RequirePermission permission="bookings.fetch"><TheaterBookingsPage /></RequirePermission> },
+            { path: 'bookings/:id', element: <RequirePermission permission="bookings.read"><TheaterBookingDetailPage /></RequirePermission> },
+            { path: 'tickets/validate', element: <RequirePermission permission="tickets.validate"><TicketValidationPage /></RequirePermission> },
             { path: 'roles', element: <RequirePermission permission="roles.fetch"><RolesPage /></RequirePermission> },
             { path: 'invitations', element: <RequirePermission permission="team.fetch"><InvitationsPage /></RequirePermission> },
             { path: 'account', element: <TheaterProfilePage /> },
@@ -131,11 +156,15 @@ export const router = createBrowserRouter([
         children: [
             { index: true, element: <GroupDashboardGate /> },
             { path: 'application', element: <GroupApplicationPage /> },
+            { path: 'theaters', element: <RequireActiveTenant><RequirePermission permission="reservations.fetch"><GroupTheatersPage /></RequirePermission></RequireActiveTenant> },
+            { path: 'theaters/:id', element: <RequireActiveTenant><RequirePermission permission="reservations.fetch"><GroupTheaterPage /></RequirePermission></RequireActiveTenant> },
+            { path: 'reservations', element: <RequireActiveTenant><RequirePermission permission="reservations.fetch"><GroupReservationsPage /></RequirePermission></RequireActiveTenant> },
+            { path: 'reservations/:id', element: <RequireActiveTenant><RequirePermission permission="reservations.read"><GroupReservationDetailPage /></RequirePermission></RequireActiveTenant> },
             { path: 'team', element: <RequireActiveTenant><RequirePermission permission="team.fetch"><TeamPage /></RequirePermission></RequireActiveTenant> },
             { path: 'team/trash', element: <RequireActiveTenant><RequirePermission permission="team.fetch"><TeamTrashPage /></RequirePermission></RequireActiveTenant> },
             { path: 'roles', element: <RequireActiveTenant><RequirePermission permission="roles.fetch"><RolesPage /></RequirePermission></RequireActiveTenant> },
             { path: 'invitations', element: <RequireActiveTenant><RequirePermission permission="team.fetch"><InvitationsPage /></RequirePermission></RequireActiveTenant> },
-            { path: 'account', element: <TenantAccountPage /> },
+            { path: 'account', element: <GroupAccountGate /> },
         ],
     },
     {
@@ -159,6 +188,8 @@ export const router = createBrowserRouter([
         element: <RequireActor actor="user"><DashboardLayout /></RequireActor>,
         children: [
             { index: true, element: <UserDashboardPage /> },
+            { path: 'bookings', element: <UserBookingsPage /> },
+            { path: 'bookings/:id', element: <UserBookingDetailPage /> },
             { path: 'profile', element: <UserProfilePage /> },
             { path: 'security', element: <UserSecurityPage /> },
         ],

@@ -17,6 +17,16 @@ php artisan migrate --seed
 php artisan serve
 php artisan queue:listen --tries=1 --timeout=0
 php artisan pail
+php artisan schedule:work
+```
+
+Reservation maintenance runs on Laravel's scheduler:
+
+```bash
+php artisan reservations:expire-holds
+php artisan reservations:complete
+php artisan bookings:expire-tickets
+php artisan schedule:list
 ```
 
 ## Database
@@ -35,7 +45,7 @@ php artisan test
 # Tests use the theaterlink_testing MySQL database.
 php artisan test --filter=TenantAuthTest
 php artisan test --filter=TenantTeamTest
-vendor/bin/phpstan analyse app/Services/Tenancy app/Traits/BelongsToTenant.php Modules/Tenancy/app Modules/Tenancy/routes --memory-limit=1G
+vendor/bin/phpstan analyse Modules/Bookings Modules/Reservations Modules/Theaters Modules/Tenancy Modules/Users Modules/Admins app/Jobs/SendNotificationChannelsJob.php --memory-limit=1G
 ```
 
 ## Modules

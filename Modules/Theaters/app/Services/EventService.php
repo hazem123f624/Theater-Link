@@ -77,6 +77,12 @@ class EventService
 
     public function unpublish(Event $event): Event
     {
+        if (app(\Modules\Bookings\Services\BookingService::class)->hasActiveBookingsForEvent($event)) {
+            throw ValidationException::withMessages([
+                'event' => [__('theaters::messages.event_has_bookings')],
+            ]);
+        }
+
         $event->update([
             'status' => 'draft',
             'published_at' => null,

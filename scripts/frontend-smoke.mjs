@@ -138,7 +138,7 @@ try {
     await theater.getByRole('button', { name: 'Save' }).click();
     await theater.getByText('Show created.').waitFor();
     await theater.getByRole('link', { name: 'Ticket tiers' }).click();
-    await theater.getByRole('button', { name: 'Add ticket tier' }).click();
+    await theater.getByRole('button', { name: 'Add ticket tier' }).first().click();
     await theater.getByLabel('English name').fill('General Admission');
     await theater.getByLabel('Price').fill('100');
     await theater.getByLabel('Total quantity').fill('50');
@@ -245,6 +245,38 @@ try {
     await group.getByRole('button', { name: 'Close notifications' }).click();
     console.log('✓ admin document review, group resubmission, approval, and notification');
 
+    await group.goto(`${base}/group/theaters`, { waitUntil: 'networkidle' });
+    await group.getByText(`Smoke Theater ${stamp}`).first().click();
+    await group.getByRole('heading', { name: 'Available slots', exact: true }).waitFor();
+    await group.getByRole('button', { name: 'Request slot' }).first().waitFor();
+    await group.getByRole('button', { name: 'Request slot' }).first().click();
+    await group.getByRole('button', { name: 'Request slot' }).last().click();
+    await group.getByText('Reservation request submitted.').waitFor();
+    await group.waitForURL(/\/group\/reservations\/\d+/);
+    const reservationUrl = group.url();
+    await group.getByText('Waiting for the theater decision.').waitFor();
+    console.log('✓ group discovers theater, hall, slot, and requests a reservation');
+
+    await theater.goto(`${base}/theater/login`, { waitUntil: 'networkidle' });
+    await theater.getByLabel('Workspace address').fill(`smoke-theater-${stamp}`);
+    await theater.getByLabel('Email address').fill(`owner-${stamp}@smoke.test`);
+    await theater.getByLabel('Password', { exact: true }).fill('NewP@ssw0rd123');
+    await theater.getByRole('button', { name: 'Sign in' }).click();
+    await theater.waitForURL(`${base}/theater`);
+    await theater.goto(`${base}/theater/reservations`, { waitUntil: 'networkidle' });
+    await theater.getByText('Reservations', { exact: true }).first().waitFor();
+    await theater.getByRole('link', { name: 'View' }).first().click();
+    await theater.getByRole('button', { name: 'Approve reservation' }).click();
+    await theater.getByRole('button', { name: 'Confirm' }).last().click();
+    await theater.getByText('Reservation approved.').waitFor();
+    await theater.getByText('This reservation is approved. The slot is reserved.').waitFor();
+    console.log('✓ theater approves reservation and reserves the slot');
+
+    await group.goto(reservationUrl, { waitUntil: 'networkidle' });
+    await group.getByText('This reservation is approved. The slot is reserved.').waitFor();
+    await group.getByText('Approved', { exact: true }).first().waitFor();
+    console.log('✓ group sees the approved reservation');
+
     const userContext = await browser.newContext();
     const user = await newPage(userContext);
     await user.goto(`${base}/register/user`, { waitUntil: 'networkidle' });
@@ -258,6 +290,37 @@ try {
     await user.waitForURL(`${base}/user`);
     await user.getByText('Your TheaterLink').waitFor();
     console.log('✓ individual registration and dashboard');
+
+    await user.goto(`${base}${publicHref}`, { waitUntil: 'networkidle' });
+    await user.getByText(`Smoke Event ${stamp}`).waitFor();
+    await user.getByRole('button', { name: 'Increase quantity' }).first().click();
+    await user.getByRole('button', { name: 'Confirm booking' }).click();
+    await user.waitForURL(/\/user\/bookings\/\d+/);
+    await user.getByText('Your tickets are confirmed.').waitFor();
+    await user.getByText('Present this QR code at the entrance.').first().waitFor();
+    const bookingUrl = user.url();
+    const bookingId = Number(bookingUrl.split('/').pop());
+    const userToken = await user.evaluate(() => {
+        const raw = window.sessionStorage.getItem('theaterlink.session');
+        return raw ? JSON.parse(raw).token : null;
+    });
+    const qrToken = await user.evaluate(async ({ id, token }) => {
+        const response = await fetch(`/api/v1/user/bookings/${id}`, {
+            headers: { Accept: 'application/json', Authorization: `Bearer ${token}` },
+        });
+        const payload = await response.json();
+        return payload.data?.tickets?.[0]?.qr_token ?? null;
+    }, { id: bookingId, token: userToken });
+    if (!qrToken) throw new Error('Booking QR token was not rendered by the API.');
+    console.log('✓ individual discovers event, books tickets, and sees QR');
+
+    await theater.goto(`${base}/theater/tickets/validate`, { waitUntil: 'networkidle' });
+    await theater.getByLabel('QR token').fill(qrToken);
+    await theater.getByRole('button', { name: 'Validate ticket' }).click();
+    await theater.getByText('Ticket valid. Entry recorded.').first().waitFor();
+    await user.reload({ waitUntil: 'networkidle' });
+    await user.getByText('Used', { exact: true }).first().waitFor();
+    console.log('✓ theater validates ticket QR once');
 
     const arabicContext = await browser.newContext();
     const arabic = await newPage(arabicContext);

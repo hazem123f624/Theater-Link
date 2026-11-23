@@ -13,6 +13,7 @@ import {
 import type { PublicEvent, PublicTheater } from '@/api/types';
 import { Badge, Button, EmptyState, Pagination, SearchInput, Select, Skeleton } from '@/components/ui';
 import { formatDateTime, localizedName } from '@/lib/format';
+import { PublicBookingPanel } from '@/features/bookings/public-booking-panel';
 
 function PublicShell({ children }: { children: React.ReactNode }) {
     return <div className="page-shell">{children}</div>;
@@ -198,18 +199,7 @@ export function PublicEventPage() {
                     <div className="flex flex-wrap items-center gap-2"><Badge tone="info">{data.category?.name ?? t('theaterOps.public.eventsTitle')}</Badge><span className="text-sm text-ink-500">{data.theater.name}</span></div>
                     <h1 className="mt-4 text-3xl font-bold text-ink-950 sm:text-4xl">{data.title ?? '—'}</h1>
                     <p className="mt-4 text-base leading-8 text-ink-600">{data.description ?? '—'}</p>
-                    <div className="mt-6 rounded-2xl border border-brand-100 bg-brand-50 px-4 py-3 text-sm text-brand-800"><Ticket size={16} className="inline" /> {t('theaterOps.public.bookNote')}</div>
-                    <div className="mt-6 space-y-3">
-                        <h2 className="text-lg font-bold text-ink-950">{t('theaterOps.public.shows')}</h2>
-                        {data.shows.length === 0 ? <p className="text-sm text-ink-500">{t('theaterOps.public.noShows')}</p> : data.shows.map((show) => (
-                            <div key={show.id} className="card card-body">
-                                <div className="flex flex-wrap items-center justify-between gap-2"><p className="font-semibold text-ink-900">{formatDateTime(show.starts_at)}</p><Badge tone="neutral">{show.hall?.name}</Badge></div>
-                                <div className="mt-3 flex flex-wrap gap-2">
-                                    {show.tiers?.length ? show.tiers.map((tier) => <span key={tier.id} className="rounded-lg bg-ink-100 px-2.5 py-1.5 text-xs text-ink-700">{tier.name} · {tier.price} {tier.currency}</span>) : <span className="text-xs text-ink-400">{t('theaterOps.events.noTiers')}</span>}
-                                </div>
-                            </div>
-                        ))}
-                    </div>
+                    <PublicBookingPanel event={data} />
                 </div>
             </div>
         </PublicShell>

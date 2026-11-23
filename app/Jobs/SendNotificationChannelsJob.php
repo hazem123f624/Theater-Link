@@ -8,6 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Modules\Admins\Models\Admins;
 use Modules\Tenancy\Models\TenantMember;
+use Modules\Users\Models\User;
 
 class SendNotificationChannelsJob implements ShouldQueue
 {
@@ -30,7 +31,7 @@ class SendNotificationChannelsJob implements ShouldQueue
         if (! $notifiable) {
             return;
         }
-        $email = $notifiable instanceof Admins || $notifiable instanceof TenantMember
+        $email = $notifiable instanceof Admins || $notifiable instanceof TenantMember || $notifiable instanceof User
             ? $notifiable->email
             : null;
 
@@ -46,7 +47,7 @@ class SendNotificationChannelsJob implements ShouldQueue
             ]);
         }
 
-        if ($notifiable instanceof TenantMember && $notifiable->phone) {
+        if (($notifiable instanceof TenantMember || $notifiable instanceof User) && $notifiable->phone) {
             MessageFactory::make('sms')->send([
                 'to' => $notifiable->phone,
                 'body' => $notification->title.': '.$notification->body,

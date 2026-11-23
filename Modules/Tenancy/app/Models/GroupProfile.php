@@ -3,6 +3,7 @@
 namespace Modules\Tenancy\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Services\MediaSystem\Models\MediaFile;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -20,6 +21,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read Tenant $tenant
+ * @property-read MediaFile|null $logo
  */
 class GroupProfile extends Model
 {
@@ -40,5 +42,10 @@ class GroupProfile extends Model
     public function tenant(): BelongsTo
     {
         return $this->belongsTo(Tenant::class);
+    }
+
+    public function logo(): BelongsTo
+    {
+        return $this->belongsTo(MediaFile::class, 'logo_media_id');
     }
 }

@@ -202,6 +202,8 @@ export function statusTone(status: string | null | undefined): BadgeTone {
         case 'active':
         case 'approved':
         case 'accepted':
+        case 'confirmed':
+        case 'valid':
             return 'success';
         case 'pending':
         case 'pending_review':

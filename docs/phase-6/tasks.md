@@ -4,65 +4,66 @@ Status legend: `[x]` implemented, `[~]` partial, `[ ]` not started.
 
 ## 1. Public Event Discovery
 
-- [ ] Add published-only event list endpoints.
-- [ ] Add search by event/theater name.
-- [ ] Add filters for theater, date, and category.
-- [ ] Paginate all list endpoints.
-- [ ] Add event detail with translated content and poster.
-- [ ] Add upcoming shows and active ticket tiers.
-- [ ] Return only published, non-cancelled events/shows.
-- [ ] Add public visibility and empty-result tests.
+- [x] Reuse the Phase 4 published-only event list and detail endpoints.
+- [x] Add search by event/theater name and filters for theater, date, and category.
+- [x] Paginate all list endpoints.
+- [x] Return only published, non-cancelled events and scheduled shows.
+- [x] Expose active tiers and upcoming shows publicly.
+- [x] Add public visibility and empty-result tests.
 
 ## 2. Ticket Inventory
 
-- [ ] Create ticket tiers with total quantity, sold quantity, held quantity, and sale window.
-- [ ] Add database checks for non-negative counters and the total invariant.
-- [ ] Add indexes for show/tier availability.
-- [ ] Ensure tier totals do not exceed show/hall capacity.
-- [ ] Expose available quantity as `total - sold - held`.
-- [ ] Add availability tests.
+- [x] Use tier total, sold, and held quantities with sale windows.
+- [x] Add database checks for non-negative counters and the total invariant.
+- [x] Add indexes for show/tier availability.
+- [x] Enforce tier totals against hall capacity.
+- [x] Expose available quantity as `total - sold - held`.
+- [x] Add availability and sold-out tests.
 
 ## 3. Booking Creation
 
-- [ ] Add booking and booking-item tables with price snapshots.
-- [ ] Add a unique booking reference.
-- [ ] Add an idempotency key with a unique user/key constraint.
-- [ ] Validate user, event, show, tier, quantity, sale window, and per-booking limit.
-- [ ] Lock tier rows in deterministic order inside a transaction.
-- [ ] Recheck inventory after locking.
-- [ ] Increment sold quantity atomically.
-- [ ] Create booking and items, or roll back all tiers on failure.
-- [ ] Add concurrent last-ticket, insufficient-inventory, and multi-tier rollback tests.
+- [x] Add booking, booking-item, ticket, and status-history tables with price snapshots.
+- [x] Add a unique booking reference.
+- [x] Add a unique user/idempotency key with request hashing.
+- [x] Validate user, event, show, tier, quantity, sale window, and per-booking limit.
+- [x] Lock tier rows in deterministic order inside a transaction.
+- [x] Recheck inventory after locking.
+- [x] Increment sold quantity atomically.
+- [x] Create booking, items, and tickets or roll back all tiers on failure.
+- [x] Add multi-tier rollback and insufficient-inventory tests.
+- [~] Add a true parallel last-ticket test. Row locking and a sequential invariant test cover the behavior; the suite does not spawn parallel PHP processes.
 
 ## 4. Tickets and Confirmation
 
-- [ ] Generate a booking confirmation with reference and ticket information.
-- [ ] Add per-ticket records if entry control is required.
-- [ ] Add unique ticket numbers and opaque QR tokens.
-- [ ] Make ticket generation idempotent.
-- [ ] Add QR validation and used-status rules.
-- [ ] Ensure no personal or tenant secrets are encoded in QR payloads.
-- [ ] Add duplicate ticket-generation tests.
+- [x] Generate a booking confirmation with reference and ticket information.
+- [x] Add per-ticket records.
+- [x] Add unique ticket numbers and opaque QR tokens.
+- [x] Make ticket generation idempotent through booking idempotency and unique constraints.
+- [x] Add QR validation and used-status rules.
+- [x] Ensure no personal or tenant secrets are encoded in QR payloads.
+- [x] Add ticket-generation and validation tests.
 
 ## 5. Cancellation
 
-- [ ] Define the cancellation policy and cutoff.
-- [ ] Allow an individual to cancel own bookings only.
-- [ ] Lock booking and tiers during cancellation.
-- [ ] Restore inventory only when policy allows.
-- [ ] Mark booking and tickets cancelled.
-- [ ] Prevent counters from going negative.
-- [ ] Add cancellation and audit tests.
+- [x] Define the individual cutoff as 24 hours before show start.
+- [x] Allow individuals to cancel own bookings only.
+- [x] Allow theaters to cancel own bookings before show start.
+- [x] Lock booking and tiers during cancellation.
+- [x] Restore inventory only when cancellation succeeds and no ticket is used.
+- [x] Mark booking and tickets cancelled.
+- [x] Prevent counters from going negative with database checks.
+- [x] Add cancellation and audit tests.
 
 ## 6. Notifications and Documentation
 
-- [ ] Notify the individual after booking confirmation.
-- [ ] Notify the individual after cancellation.
-- [ ] Queue notifications after commit.
-- [ ] Document all Phase 6 endpoints.
-- [ ] Add Phase 6 cases to the Postman collection.
-- [ ] Add feature tests for discovery, booking, concurrency, cancellation, and IDOR.
-- [ ] Run the Phase 6 test suite and static analysis.
+- [x] Notify the individual after booking confirmation and cancellation.
+- [x] Notify the theater after a new booking and cancellation.
+- [x] Queue notifications after commit.
+- [x] Enable notification delivery for individual users.
+- [x] Document all Phase 6 endpoints.
+- [x] Add Phase 6 cases to the Postman collection.
+- [x] Add feature tests for discovery, booking, idempotency, cancellation, and isolation.
+- [x] Run the Phase 6 test suite and static analysis.
 
 ## Definition of Done
 

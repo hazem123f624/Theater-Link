@@ -1,0 +1,11 @@
+{
+    "name": "Reservations",
+    "alias": "reservations",
+    "description": "Theater hall reservations, holds, decisions, and lifecycle management.",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Reservations\\Providers\\ReservationsServiceProvider"
+    ],
+    "files": []
+}

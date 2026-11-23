@@ -1,36 +1,36 @@
 {
-  "_i18n-Bq992G8U.js": {
-    "file": "assets/i18n-Bq992G8U.js",
+  "_i18n-BoNQmttC.js": {
+    "file": "assets/i18n-BoNQmttC.js",
     "name": "i18n",
     "imports": [
-      "_react-B1eRRjqn.js"
+      "_react-D3oGKeou.js"
     ]
   },
-  "_query-CFfvSZRd.js": {
-    "file": "assets/query-CFfvSZRd.js",
+  "_query-CRS0_Hv6.js": {
+    "file": "assets/query-CRS0_Hv6.js",
     "name": "query",
     "imports": [
-      "_react-B1eRRjqn.js"
+      "_react-D3oGKeou.js"
     ]
   },
-  "_react-B1eRRjqn.js": {
-    "file": "assets/react-B1eRRjqn.js",
+  "_react-D3oGKeou.js": {
+    "file": "assets/react-D3oGKeou.js",
     "name": "react"
   },
   "resources/css/app.css": {
-    "file": "assets/app-DW1Qkbx8.css",
+    "file": "assets/app-Cy8uu2yC.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
   "resources/js/main.tsx": {
-    "file": "assets/main-Vkpmnx6t.js",
+    "file": "assets/main-YMUgA0xj.js",
     "name": "main",
     "src": "resources/js/main.tsx",
     "isEntry": true,
     "imports": [
-      "_query-CFfvSZRd.js",
-      "_react-B1eRRjqn.js",
-      "_i18n-Bq992G8U.js"
+      "_query-CRS0_Hv6.js",
+      "_react-D3oGKeou.js",
+      "_i18n-BoNQmttC.js"
     ]
   }
 }

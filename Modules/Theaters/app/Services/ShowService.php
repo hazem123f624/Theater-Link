@@ -21,14 +21,16 @@ class ShowService
 
         if ($event->status === 'cancelled') {
             throw ValidationException::withMessages([
-                'event' => [__('theaters::messages.event_cancelled')],
+                'event' => [__('theaters::messages.event_is_cancelled')],
             ]);
         }
 
         $this->assertWindow($startsAt, $endsAt);
-        $this->slots->assertShowAvailable($hall, $startsAt, $endsAt);
 
         return DB::transaction(function () use ($event, $hall, $startsAt, $endsAt): Show {
+            app(\Modules\Reservations\Services\ReservationService::class)->invalidatePendingHoldsForShow($hall, $startsAt, $endsAt);
+            $this->slots->assertShowAvailable($hall, $startsAt, $endsAt);
+
             $show = Show::query()->create([
                 'tenant_id' => $event->tenant_id,
                 'event_id' => $event->id,
@@ -54,14 +56,16 @@ class ShowService
 
         if ($show->status === 'cancelled') {
             throw ValidationException::withMessages([
-                'show' => [__('theaters::messages.event_cancelled')],
+                'show' => [__('theaters::messages.event_is_cancelled')],
             ]);
         }
 
         $this->assertWindow($startsAt, $endsAt);
-        $this->slots->assertShowAvailable($hall, $startsAt, $endsAt, $show);
 
         return DB::transaction(function () use ($show, $hall, $startsAt, $endsAt): Show {
+            app(\Modules\Reservations\Services\ReservationService::class)->invalidatePendingHoldsForShow($hall, $startsAt, $endsAt);
+            $this->slots->assertShowAvailable($hall, $startsAt, $endsAt, $show);
+
             $this->slots->releaseShow($show);
             $show->update([
                 'hall_id' => $hall->id,
@@ -83,6 +87,8 @@ class ShowService
                 'cancelled_at' => now(),
             ]);
 
+            app(\Modules\Bookings\Services\BookingService::class)->cancelForShow($show, 'show_cancelled');
+
             return $show->fresh(['event.translations', 'hall']);
         });
     }
@@ -92,6 +98,8 @@ class ShowService
         $event->shows()->where('status', 'scheduled')->get()->each(function (Show $show): void {
             $this->slots->releaseShow($show);
             $show->update(['status' => 'cancelled', 'cancelled_at' => now()]);
+
+            app(\Modules\Bookings\Services\BookingService::class)->cancelForShow($show, 'event_cancelled');
         });
     }
 

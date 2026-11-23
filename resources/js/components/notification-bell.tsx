@@ -17,9 +17,9 @@ export function NotificationBell() {
     const [open, setOpen] = useState(false);
     const menuRef = useRef<HTMLDivElement | null>(null);
     const notifications = useQuery({
-        queryKey: ['notifications'],
+        queryKey: ['notifications', session?.actor, session?.user?.id ?? session?.member?.id ?? session?.admin?.id],
         queryFn: getNotifications,
-        enabled: session?.actor === 'admin' || session?.actor === 'group',
+        enabled: Boolean(session),
         refetchInterval: 60_000,
     });
 
@@ -37,7 +37,7 @@ export function NotificationBell() {
         return () => document.removeEventListener('mousedown', onClick);
     }, [open]);
 
-    if (!session || (session.actor !== 'admin' && session.actor !== 'group')) {
+    if (!session) {
         return null;
     }
 
@@ -58,6 +58,14 @@ export function NotificationBell() {
             navigate(session.actor === 'admin'
                 ? `/admin/applications/${notification.data.application_id}`
                 : '/group/application');
+        } else if (notification.data?.reservation_id) {
+            navigate(session.actor === 'theater'
+                ? `/theater/reservations/${notification.data.reservation_id}`
+                : `/group/reservations/${notification.data.reservation_id}`);
+        } else if (notification.data?.booking_id) {
+            navigate(session.actor === 'theater'
+                ? `/theater/bookings/${notification.data.booking_id}`
+                : `/user/bookings/${notification.data.booking_id}`);
         }
     };
 

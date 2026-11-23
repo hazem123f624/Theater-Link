@@ -1,0 +1,20 @@
+{
+    "name": "theaterlink/bookings",
+    "description": "Ticket bookings and entry tickets for TheaterLink.",
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {}
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Bookings\\": "app/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\Bookings\\Tests\\": "tests/"
+        }
+    }
+}
